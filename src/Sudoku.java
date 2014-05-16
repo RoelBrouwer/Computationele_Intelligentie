@@ -11,12 +11,34 @@ public class Sudoku {
 	
 	private void RandomVullen(int n) 
 	{
-		for (int i = 0; i < n; i++)
+		for (int l = 0; l < n; l++)
 		{
-			for (int j = 0; j < n; j++)
+			for (int k = 0; k < n; k ++)
 			{
-				getallen[i][j] = new Variabel(3);
+				for (int i = 0; i < n; i++)
+				{
+					for (int j = 0; j < n; j++)
+					{
+						getallen[l * n + i][k * n + j] = new Variabel(3);
+					}
+				}
 			}
 		}
 	}
+	
+	public String toString()
+	{
+		String string = "";
+		for (int i = 0; i < getallen.length; i++)
+		{
+			for (int j = 0; j < getallen.length; j++)
+			{
+				string += " " + getallen[i][j];
+			}
+			string += "\n";
+		}
+		return string;
+	}
+	
+	
 }

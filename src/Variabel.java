@@ -16,4 +16,9 @@ public class Variabel implements IVakje {
 	public boolean getVariabel() {
 		return true;
 	}
+	
+	public String toString()
+	{
+		return Integer.toString(n);
+	}
 }
