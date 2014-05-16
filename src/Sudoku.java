@@ -19,7 +19,7 @@ public class Sudoku {
 				{
 					for (int j = 0; j < n; j++)
 					{
-						getallen[l * n + i][k * n + j] = new Variabel(3);
+						getallen[l * n + i][k * n + j] = new Variabel(i*3 + j + 1);
 					}
 				}
 			}
