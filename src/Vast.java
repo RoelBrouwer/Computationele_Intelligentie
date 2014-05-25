@@ -16,4 +16,9 @@ public class Vast implements IVakje {
 	public boolean getVariabel() {
 		return false;
 	}
+	
+	public String toString()
+	{
+		return Integer.toString(n);
+	}
 }
