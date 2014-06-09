@@ -111,6 +111,20 @@ public class Sudoku {
 				
 	}
 	
+	public Sudoku verwissel(int r1, int k1, int r2, int k2) {
+		Sudoku nieuw;
+		try {
+			nieuw =(Sudoku) this.clone();
+		} catch (CloneNotSupportedException e) {throw new Error();}
+		
+		nieuw.getGrid()[r1][k1].setWaarde(this.getallen[r2][k2].getWaarde());
+		
+		nieuw.getGrid()[r2][k2].setWaarde(this.getallen[r1][k1].getWaarde());
+		
+		return nieuw;
+	}
+	
+	
 	public String toString()
 	{
 		String string = "";
