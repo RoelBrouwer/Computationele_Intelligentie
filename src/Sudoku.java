@@ -73,6 +73,44 @@ public class Sudoku {
 		}
 	}
 	
+	public int evalueer() {
+		int tereturnen = 0;
+		boolean[] contains = new boolean[getallen.length];
+		
+		// telt alle ontbrekende cijfers in de rijen op
+		for(int i = 0; i < getallen.length; i++) {
+			for(int k = 0; k < contains.length;k++) contains[k] = false;
+			
+			for(int j = 0; j < getallen[0].length;j++) {
+				
+			
+				contains[getallen[i][j].getWaarde()-1] = true;
+			}
+			
+			for(int k = 0; k < contains.length;k++) {
+				if(contains[k] = false) tereturnen++;
+			}
+		}
+		
+		// telt alle ontbrekende cijfers in de kolommen op
+		for(int i = 0; i < getallen.length; i++) {
+			for(int k = 0; k < contains.length;k++) contains[k] = false;
+			
+			for(int j = 0; j < getallen[0].length; j++) {
+				
+			
+				contains[getallen[j][i].getWaarde()-1] = true;
+			}
+			
+			for(int k = 0; k < contains.length;k++) {
+				if(contains[k] = false) tereturnen++;
+			}
+		}
+		
+		return tereturnen;
+				
+	}
+	
 	public String toString()
 	{
 		String string = "";
