@@ -48,5 +48,30 @@ public class Puzzel {
 		Sudoku sudoku = new Sudoku(n, sud);
 		System.out.println(sudoku);
 	}
+	
+	public static Sudoku zoekoperator(Sudoku sudoku) {
+		int eval = sudoku.evalueer();
+		Sudoku nieuw;
+		
+		// swappen gaat per nxn-blok. Is nu nog gehardode als 3x3-blok.
+		for(int g = 0; g < sudoku.getGrid().length; g += 3) {
+			for(int h = 0; h < sudoku.getGrid()[0].length; g += 3) {
+				for(int i = 0; i < 3; i++) {
+					for(int j = 0; j < 3; j++) {
+						for(int k = 0; k < 3; k++) {
+							for(int l = 0; l < 3; l++) {
+								if(!(i==k && j == l)) { // want je kan niet vakje met zichzelf verwisselen
+									nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
+									
+									if(nieuw.evalueer() >= eval) return nieuw;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return sudoku;
+	}
 
 }
