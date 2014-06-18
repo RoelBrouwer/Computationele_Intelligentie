@@ -47,6 +47,12 @@ public class Puzzel {
 		
 		Sudoku sudoku = new Sudoku(n, sud);
 		System.out.println(sudoku);
+		
+		while(sudoku.evalueer() > 0) {
+			if(Math.random() < 0.00001) sudoku = new Sudoku(n,sud); //herstart
+			
+			sudoku = zoekoperator(sudoku);
+		}
 	}
 	
 	public static Sudoku zoekoperator(Sudoku sudoku) {
