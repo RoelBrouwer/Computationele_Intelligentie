@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Random;
 
 public class Puzzel {
@@ -48,14 +49,27 @@ public class Puzzel {
 		}
 		System.out.println("\n");
 		
+		//boolean ils = ilsOfRrhc();
+		
 		Sudoku sudoku = new Sudoku(n, sud);
 		System.out.println(sudoku);
+		System.out.println(sudoku.evalueer());
+		
+		Sudoku nieuwesudoku;
 		
 		while(sudoku.evalueer() > 0) {
-			if(Math.random() < 0.00001) sudoku = new Sudoku(n,sud); //herstart
+			//if(Math.random() < 0.00001) sudoku = new Sudoku(n,sud); //herstart
 			
-			sudoku = zoekoperator(sudoku);
+			nieuwesudoku = zoekoperator(sudoku);
+			if(sudoku == nieuwesudoku) {
+				System.out.println("Lokaal maximum: ");
+				System.out.println(sudoku);
+				sudoku = new Sudoku(n,sud);
+			}
+			else sudoku = nieuwesudoku;
 		}
+		System.out.println("Globaal optimum: ");
+		System.out.println(sudoku);
 	}
 	
 	public static Sudoku zoekoperator(Sudoku sudoku) {
@@ -117,6 +131,27 @@ public class Puzzel {
 		}
 		nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
 		return nieuw;
+	}
+	
+	private static boolean ilsOfRrhc() {
+		System.out.println("Wil je Iterated Local Search? Voer dan een \"i\" in. \nWil je Random Restart Hill-Climbing? Voer dan een \"r\" in.");
+		String s = readLine();
+		if(s.equals("i")) return true;
+		else if(s.equals("r")) return false;
+		else return ilsOfRrhc();
+	}
+	
+	public static String readLine()
+	{
+		String s = "";
+		try {
+			InputStreamReader irs = new InputStreamReader(System.in);
+			BufferedReader in = new BufferedReader(irs);
+			s = in.readLine();
+		} catch (IOException e) {
+			System.out.println(); 
+		}
+		return s;
 	}
 
 }

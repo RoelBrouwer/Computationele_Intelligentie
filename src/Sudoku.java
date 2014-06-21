@@ -1,5 +1,5 @@
 
-public class Sudoku {
+public class Sudoku implements Cloneable {
 	
 	IVakje[][] getallen; 
 	
@@ -92,6 +92,7 @@ public class Sudoku {
 		}
 	}
 	
+	//evaluatiefunctie
 	public int evalueer() {
 		int tereturnen = 0;
 		boolean[] contains = new boolean[getallen.length];
@@ -101,33 +102,30 @@ public class Sudoku {
 			for(int k = 0; k < contains.length;k++) contains[k] = false;
 			
 			for(int j = 0; j < getallen[0].length;j++) {
-				
-			
 				contains[getallen[i][j].getWaarde()-1] = true;
 			}
 			
 			for(int k = 0; k < contains.length;k++) {
-				if(contains[k] = false) tereturnen++;
+				if(!contains[k]) 
+					tereturnen++;
 			}
 		}
 		
 		// telt alle ontbrekende cijfers in de kolommen op
 		for(int i = 0; i < getallen.length; i++) {
-			for(int k = 0; k < contains.length;k++) contains[k] = false;
+			for(int k = 0; k < contains.length;k++) 
+				contains[k] = false;
 			
-			for(int j = 0; j < getallen[0].length; j++) {
-				
-			
+			for(int j = 0; j < getallen[0].length; j++) 
 				contains[getallen[j][i].getWaarde()-1] = true;
-			}
-			
+						
 			for(int k = 0; k < contains.length;k++) {
-				if(contains[k] = false) tereturnen++;
+				if(!contains[k]) 
+					tereturnen++;
 			}
 		}
 		
 		return tereturnen;
-				
 	}
 	
 	public Sudoku verwissel(int r1, int k1, int r2, int k2) {
