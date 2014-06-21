@@ -8,6 +8,8 @@ public class Puzzel {
 
 	static int n;
 	static Random randomGen = new Random();
+	static boolean ils;
+	
 	public static void main(String[] args) {
 		
 		BufferedReader reader = null;
@@ -49,14 +51,30 @@ public class Puzzel {
 		}
 		System.out.println("\n");
 		
-		//boolean ils = ilsOfRrhc();
+		ils = ilsOfRrhc();
 		
 		Sudoku sudoku = new Sudoku(n, sud);
 		System.out.println(sudoku);
 		System.out.println(sudoku.evalueer());
 		
+		if (ils)
+		{
+			iteratedLocalSearch(sudoku);
+		}
+		else
+		{
+			randomRestart(sudoku, sud);
+		}
+	}
+	
+	public static void iteratedLocalSearch(Sudoku sudoku)
+	{
+		System.out.println("Not implemented yet");
+	}
+	
+	public static void randomRestart(Sudoku sudoku, int[][] sud)
+	{
 		Sudoku nieuwesudoku;
-		
 		while(sudoku.evalueer() > 0) {
 			//if(Math.random() < 0.00001) sudoku = new Sudoku(n,sud); //herstart
 			
@@ -77,9 +95,9 @@ public class Puzzel {
 		Sudoku nieuw;
 		
 		// swappen gaat per nxn-blok.
-		for (int g = 0; g < sudoku.getGrid().length; g += n) 
+		for (int g = 0; g <= n * (n - 1); g += n) 
 		{
-			for (int h = 0; h < sudoku.getGrid()[0].length; g += n) 
+			for (int h = 0; h <= n * (n - 1); h += n) 
 			{
 				for (int i = 0; i < n; i++) 
 				{
@@ -89,6 +107,7 @@ public class Puzzel {
 						{
 							for (int l = 0; l < n; l++) 
 							{
+								//System.out.println("g: " + g + " i: " + i + " h: " + h + " j: " + j);
 								if (!(i==k && j == l) 
 										&& (sudoku.getGrid()[g+i][h+j].getVariabel()) 
 										&& (sudoku.getGrid()[g+k][h+l].getVariabel())) 
@@ -96,7 +115,7 @@ public class Puzzel {
 								{ 
 									nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
 									
-									if (nieuw.evalueer() >= eval) 
+									if (nieuw.evalueer() > eval) 
 										return nieuw;
 								}
 							}
@@ -109,7 +128,6 @@ public class Puzzel {
 	}
 	
 	public static Sudoku randomZoekOperator(Sudoku sudoku) {
-		int eval = sudoku.evalueer();
 		Sudoku nieuw;
 		int g = randomGen.nextInt(n) * 3;
 		int h = randomGen.nextInt(n) * 3;
@@ -129,7 +147,7 @@ public class Puzzel {
 			k = randomGen.nextInt(n);
 			l = randomGen.nextInt(n);
 		}
-		nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
+		nieuw = sudoku.verwissel(g + i, h + j, g + k, h + l);
 		return nieuw;
 	}
 	

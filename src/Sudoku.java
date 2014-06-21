@@ -134,9 +134,11 @@ public class Sudoku implements Cloneable {
 			nieuw =(Sudoku) this.clone();
 		} catch (CloneNotSupportedException e) {throw new Error();}
 		
+		int temp = this.getallen[r1][k1].getWaarde();
+		
 		nieuw.getGrid()[r1][k1].setWaarde(this.getallen[r2][k2].getWaarde());
 		
-		nieuw.getGrid()[r2][k2].setWaarde(this.getallen[r1][k1].getWaarde());
+		nieuw.getGrid()[r2][k2].setWaarde(temp);
 		
 		return nieuw;
 	}
