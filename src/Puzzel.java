@@ -99,6 +99,7 @@ public class Puzzel {
 		int aantalLokaalOptima = 0;
 		long tijdGlob = System.currentTimeMillis();
 		long tijdLok = System.currentTimeMillis();
+		long duurLok;
 		
 		for(tellerGlob = 0, tellerLok = 0; sudoku.evalueer() > 0; tellerGlob++, tellerLok++) 
 		{
@@ -112,7 +113,8 @@ public class Puzzel {
 			{
 				System.out.println("Lokaal maximum gevonden!");
 				System.out.println("Aantal stappen: " + tellerLok);
-				System.out.println("Tijd: " + tijdLok);
+				duurLok = System.currentTimeMillis() - tijdLok;
+				System.out.println("Tijd: " + duurLok);
 				System.out.println("Evalueerfunctie: " + sudoku.evalueer());
 				//System.out.println(sudoku);
 				System.out.println();
@@ -128,7 +130,8 @@ public class Puzzel {
 		System.out.println("Globaal optimum: ");
 		System.out.println("Aantal stappen in totaal: " + tellerGlob);
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
-		System.out.println("Tijd in totaal: "+ tijdGlob);
+		long duur = System.currentTimeMillis() - tijdGlob;
+		System.out.println("Tijd in totaal: "+ duur);
 		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
 		System.out.println("Aantal lokaal optima bereikt: " + aantalLokaalOptima);
 		System.out.println(sudoku);
