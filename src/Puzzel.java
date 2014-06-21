@@ -56,15 +56,26 @@ public class Puzzel {
 		System.out.println(sudoku.evalueer());
 		
 		Sudoku nieuwesudoku;
+		int tellerGlob;
+		int tellerLok;
 		
-		while(sudoku.evalueer() > 0) {
-			//if(Math.random() < 0.00001) sudoku = new Sudoku(n,sud); //herstart
-			
+		for(tellerGlob = 0, tellerLok = 0; sudoku.evalueer() > 0; tellerGlob++, tellerLok++) {
+					
 			nieuwesudoku = zoekoperator(sudoku);
+			System.out.println(nieuwesudoku.evalueer());
+			System.out.println(nieuwesudoku);
+			
+			//indien een lokaal optimum wordt bereikt
 			if(sudoku == nieuwesudoku) {
-				System.out.println("Lokaal maximum: ");
+				System.out.println("Lokaal maximum gevonden!");
+				System.out.println("Aantal stappen: " + tellerLok);
+				System.out.println("Evalueerfunctie: " + sudoku.evalueer());
 				System.out.println(sudoku);
+				System.out.println();
+				
+				// reset voor de volgende Hill-climb search.
 				sudoku = new Sudoku(n,sud);
+				tellerLok = 0;
 			}
 			else sudoku = nieuwesudoku;
 		}
@@ -77,9 +88,9 @@ public class Puzzel {
 		Sudoku nieuw;
 		
 		// swappen gaat per nxn-blok.
-		for (int g = 0; g < sudoku.getGrid().length; g += n) 
+		for (int g = 0; g < n*n-1; g += n) 
 		{
-			for (int h = 0; h < sudoku.getGrid()[0].length; g += n) 
+			for (int h = 0; h < n*n-1; h += n) 
 			{
 				for (int i = 0; i < n; i++) 
 				{
@@ -96,7 +107,7 @@ public class Puzzel {
 								{ 
 									nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
 									
-									if (nieuw.evalueer() >= eval) 
+									if (nieuw.evalueer() < eval) 
 										return nieuw;
 								}
 							}
