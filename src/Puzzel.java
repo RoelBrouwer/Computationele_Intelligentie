@@ -1,13 +1,16 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 
 public class Puzzel {
 
+	static int n;
+	static Random randomGen = new Random();
 	public static void main(String[] args) {
 		
 		BufferedReader reader = null;
-		int n = 0;
+		n = 0;
 		int[][] sud = {{0}};
 		 
 		try 
@@ -53,17 +56,28 @@ public class Puzzel {
 		int eval = sudoku.evalueer();
 		Sudoku nieuw;
 		
-		// swappen gaat per nxn-blok. Is nu nog gehardode als 3x3-blok.
-		for(int g = 0; g < sudoku.getGrid().length; g += 3) {
-			for(int h = 0; h < sudoku.getGrid()[0].length; g += 3) {
-				for(int i = 0; i < 3; i++) {
-					for(int j = 0; j < 3; j++) {
-						for(int k = 0; k < 3; k++) {
-							for(int l = 0; l < 3; l++) {
-								if(!(i==k && j == l)) { // want je kan niet vakje met zichzelf verwisselen
+		// swappen gaat per nxn-blok.
+		for (int g = 0; g < sudoku.getGrid().length; g += n) 
+		{
+			for (int h = 0; h < sudoku.getGrid()[0].length; g += n) 
+			{
+				for (int i = 0; i < n; i++) 
+				{
+					for (int j = 0; j < n; j++) 
+					{
+						for (int k = 0; k < n; k++) 
+						{
+							for (int l = 0; l < n; l++) 
+							{
+								if (!(i==k && j == l) 
+										&& (sudoku.getGrid()[g+i][h+j].getVariabel()) 
+										&& (sudoku.getGrid()[g+k][h+l].getVariabel())) 
+									// want je kan niet vakje met zichzelf verwisselen, en de vakjes moeten variabel zijn
+								{ 
 									nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
 									
-									if(nieuw.evalueer() >= eval) return nieuw;
+									if (nieuw.evalueer() >= eval) 
+										return nieuw;
 								}
 							}
 						}
@@ -72,6 +86,31 @@ public class Puzzel {
 			}
 		}
 		return sudoku;
+	}
+	
+	public static Sudoku randomZoekOperator(Sudoku sudoku) {
+		int eval = sudoku.evalueer();
+		Sudoku nieuw;
+		int g = randomGen.nextInt(n) * 3;
+		int h = randomGen.nextInt(n) * 3;
+		int i = randomGen.nextInt(n);
+		int j = randomGen.nextInt(n);
+		int k = randomGen.nextInt(n);
+		int l = randomGen.nextInt(n);
+		// Als we een vakje met zichzelf dreigen te gaan verwisselen,
+		// of een vast vakje geselecteerd hebben, moeten we onze
+		// keuze heroverwegen.
+		while ((i == k && j == l) 
+				|| !(sudoku.getGrid()[g+i][h+j].getVariabel()) 
+				|| !(sudoku.getGrid()[g+k][h+l].getVariabel()))
+		{
+			i = randomGen.nextInt(n);
+			j = randomGen.nextInt(n);
+			k = randomGen.nextInt(n);
+			l = randomGen.nextInt(n);
+		}
+		nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
+		return nieuw;
 	}
 
 }
