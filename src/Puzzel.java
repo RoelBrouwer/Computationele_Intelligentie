@@ -96,6 +96,7 @@ public class Puzzel {
 		Sudoku nieuwesudoku;		
 		int tellerGlob;
 		int tellerLok;
+		int aantalLokaalOptima = 0;
 		long tijdGlob = System.currentTimeMillis();
 		long tijdLok = System.currentTimeMillis();
 		
@@ -119,6 +120,7 @@ public class Puzzel {
 				// reset voor de volgende Hill-climb search.
 				sudoku = new Sudoku(n,sud);
 				tellerLok = 0;
+				aantalLokaalOptima++;
 				tijdLok = System.currentTimeMillis();
 			}
 			else sudoku = nieuwesudoku;
@@ -128,6 +130,7 @@ public class Puzzel {
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
 		System.out.println("Tijd in totaal: "+ tijdGlob);
 		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
+		System.out.println("Aantal lokaal optima bereikt: " + aantalLokaalOptima);
 		System.out.println(sudoku);
 	}
 	
