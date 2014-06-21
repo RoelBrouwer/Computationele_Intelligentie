@@ -132,7 +132,8 @@ public class Puzzel {
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
 		long duur = System.currentTimeMillis() - tijdGlob;
 		System.out.println("Tijd in totaal: "+ duur);
-		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
+		long duur2 = System.currentTimeMillis() - tijdLok;
+		System.out.println("Tijd sinds begin hill-climb: " + duur2);
 		System.out.println("Aantal lokaal optima bereikt: " + aantalLokaalOptima);
 		System.out.println(sudoku);
 	}
