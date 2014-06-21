@@ -1,0 +1,11 @@
+Testruns CI:
+
+Sudoku: test_input.txt
+
+1e keer:
+Aantal stappen in totaal: 572380
+Aantal stappen sinds begin hill-climb: 30
+Tijd in totaal: 263764
+Aantal lokale optima bereikt: 29196
+
+2e keer:
