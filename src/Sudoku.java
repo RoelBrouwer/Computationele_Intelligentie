@@ -36,7 +36,8 @@ public class Sudoku {
 						int waarde = sud[l * n + i][k * n + j];
 						if (waarde == 0)
 						{
-							int tevullen = FirstTrue(alreadyplaced);
+							//int tevullen = FirstTrue(alreadyplaced);
+							int tevullen = randomTrue(alreadyplaced);
 							getallen[l * n + i][k * n + j] = new Variabel(tevullen);
 							alreadyplaced[tevullen - 1] = true;
 						}
@@ -44,6 +45,24 @@ public class Sudoku {
 				}
 			}
 		}
+	}
+	
+	//kiest een willekeurig oningevuld vakje om te vullen
+	private int randomTrue(boolean[] array)
+	{
+		int aantalOngevuld = 0;
+		for(int i = 0; i < array.length; i++) if(!array[i]) aantalOngevuld++;
+		
+		int tevullen = (int)(Math.random() * aantalOngevuld);
+		int j = 0;
+		for (int i = 0; i < array.length; i++)
+		{
+			if(!array[i]) {
+				if(j==tevullen) return i+1;
+				else j++;
+			}
+		}
+		return -1;
 	}
 	
 	private int FirstTrue(boolean[] array)
@@ -124,6 +143,9 @@ public class Sudoku {
 		return nieuw;
 	}
 	
+	public IVakje[][] getGrid() {
+		return getallen;
+	}
 	
 	public String toString()
 	{
