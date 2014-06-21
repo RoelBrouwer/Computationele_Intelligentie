@@ -6,7 +6,8 @@ import java.util.Random;
 
 public class Puzzel {
 
-	static int n;
+	static int n; 
+	static int s = 30;
 	static Random randomGen = new Random();
 	static boolean ils;
 	
@@ -69,17 +70,36 @@ public class Puzzel {
 	
 	public static void iteratedLocalSearch(Sudoku sudoku)
 	{
-		System.out.println("Not implemented yet");
+		Sudoku nieuwesudoku;
+		while (sudoku.evalueer() > 0)
+		{
+			nieuwesudoku = zoekoperator(sudoku);
+			if(sudoku == nieuwesudoku) 
+			{
+				System.out.println("Lokaal maximum: ");
+				System.out.println(sudoku);
+				// Random walk van s lang, s is bovenaan deze file in te stellen.
+				for (int i = 0; i < s; i++)
+				{
+					sudoku = randomZoekOperator(sudoku);
+				}
+			}
+			else 
+				sudoku = nieuwesudoku;
+		}
+		System.out.println("Globaal optimum: ");
+		System.out.println(sudoku);
 	}
 	
 	public static void randomRestart(Sudoku sudoku, int[][] sud)
 	{
 		Sudoku nieuwesudoku;
-		while(sudoku.evalueer() > 0) {
+		while (sudoku.evalueer() > 0) {
 			//if(Math.random() < 0.00001) sudoku = new Sudoku(n,sud); //herstart
 			
 			nieuwesudoku = zoekoperator(sudoku);
-			if(sudoku == nieuwesudoku) {
+			if(sudoku == nieuwesudoku) 
+			{
 				System.out.println("Lokaal maximum: ");
 				System.out.println(sudoku);
 				sudoku = new Sudoku(n,sud);
@@ -115,7 +135,7 @@ public class Puzzel {
 								{ 
 									nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
 									
-									if (nieuw.evalueer() > eval) 
+									if (nieuw.evalueer() < eval) 
 										return nieuw;
 								}
 							}
