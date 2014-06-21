@@ -16,7 +16,11 @@ public class Sudoku implements Cloneable {
 		{
 			for (int k = 0; k < n; k ++)
 			{
-				boolean[] alreadyplaced = {false, false, false, false, false, false, false, false, false};
+				boolean[] alreadyplaced = new boolean[n * n];
+				for (int q = 0; q < n * n; q++)
+				{
+					alreadyplaced[q] = false;
+				}
 				for (int i = 0; i < n; i++)
 				{
 					for (int j = 0; j < n; j++)
