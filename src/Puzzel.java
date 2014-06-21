@@ -78,29 +78,36 @@ public class Puzzel {
 		
 		int tellerGlob;
 		int tellerLok;
+		long tijdGlob = System.currentTimeMillis();
+		long tijdLok = System.currentTimeMillis();
 		
 		for(tellerGlob = 0, tellerLok = 0; sudoku.evalueer() > 0; tellerGlob++, tellerLok++) {
 					
-
 			nieuwesudoku = zoekoperator(sudoku);
-			System.out.println(nieuwesudoku.evalueer());
-			System.out.println(nieuwesudoku);
+			//System.out.println(nieuwesudoku.evalueer());
+			//System.out.println(nieuwesudoku);
 			
 			//indien een lokaal optimum wordt bereikt
 			if(sudoku == nieuwesudoku) {
 				System.out.println("Lokaal maximum gevonden!");
 				System.out.println("Aantal stappen: " + tellerLok);
+				System.out.println("Tijd: " + tijdLok);
 				System.out.println("Evalueerfunctie: " + sudoku.evalueer());
-				System.out.println(sudoku);
+				//System.out.println(sudoku);
 				System.out.println();
 				
 				// reset voor de volgende Hill-climb search.
 				sudoku = new Sudoku(n,sud);
 				tellerLok = 0;
+				tijdLok = System.currentTimeMillis();
 			}
 			else sudoku = nieuwesudoku;
 		}
 		System.out.println("Globaal optimum: ");
+		System.out.println("Aantal stappen in totaal: " + tellerGlob);
+		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
+		System.out.println("Tijd in totaal: "+ tijdGlob);
+		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
 		System.out.println(sudoku);
 	}
 	
@@ -113,7 +120,6 @@ public class Puzzel {
 		for (int g = 0; g <= n * (n - 1); g += n) 
 		{
 			for (int h = 0; h <= n * (n - 1); h += n) 
-
 			{
 				for (int i = 0; i < n; i++) 
 				{
