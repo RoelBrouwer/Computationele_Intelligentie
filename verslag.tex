@@ -6,6 +6,31 @@
 \author{Cornelis Bouter (studentnummer) en Roel Brouwer (3976866)}
 \date{27 juni 2014}
 
+% Code Snippet settings
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
 \begin{document}
 \maketitle
 
@@ -17,6 +42,20 @@
 \section{Hill-climbing}
 \subsection{Random Restart}
 \subsection{Iterated Local Search}
+Voor het implementeren van \textit{iterated local search} is het nodig geweest de zoekoperator iets aan te passen. De zoekoperator die voor het beklimmen van de heuvel, het \textit{hill-climbing} deel, gebruikt wordt, loopt alle swap-mogelijkheden in een bepaalde volgorde door, en kiest de eerste die een verbetering is. Voor \textit{iterated local search} is een \textit{random walk} nodig. Een \textit{random walk} geeft niets om het antwoord op de vraag of een opvolger-toestand al dan niet een verbetering is. Het moet een willekeurige opvolger-toestand kunnen kiezen, ongeacht de waarde die de evaluatiefunctie aan die toestand geeft. Wanneer de oude implementatie gebruikt zou worden, zou het dan steeds voor de eerste optie kiezen: het swappen van de eerste twee niet-vaste vakjes in het blok in de linksbovenhoek van de sudoku. Dat willen we niet, daarom veranderen we de zoekoperator-functie zodat deze twee willekeurige vakjes (binnen hetzelfde blok - natuurlijk) van plaats verwisseld worden:
+\begin{lstlisting}
+RandomZoekOperator (Sudoku)
+	// g en h representeren het blok waarin het verwisselen wordt uitgevoerd.
+	g, h = randomInt(0, n) * n;
+	// i, j, k en l representeren de twee vakjes die verwisseld worden.
+	i, j, k, l = randomInt(0, n);
+	while ((i,j) en (k,l) representeren hetzelfde vakje of
+	  (i,j) of (k,l) is een vast vakje)
+		// Nieuwe waardes voor i, j, k en l.
+		i, j, k, l = randomInt(0, n);
+	// Verwissel de genoemde vakjes in de sudoku en return het resultaat
+	return Sudoku.verwissel(g + i, h + j, g + k, h + l)
+\end{lstlisting}
 \section{Constraint Satisfaction}
 \subsection{Backtracking}
 \subsection{Forward Checking}
