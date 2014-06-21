@@ -35,10 +35,6 @@
 \begin{document}
 \maketitle
 
-\begin{abstract}
-\end{abstract}
-
-
 \chapter{Implementatie algoritmen}
 \section{Hill-climbing}
 \subsection{Algemeen}
@@ -76,6 +72,14 @@ ZoekOperator (Sudoku)
 \end{lstlisting}
 \end{minipage}
 \subsection{Random Restart}
+Met het klaarstaan van de zoekoperator die in de vorige sectie besproken is, is het implementeren van \textit{random restart} relatief eenvoudig. In pseudo-code ziet dat er als volgt uit:
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+// Pseudo-code voor random restart implementatie
+\end{lstlisting}
+\end{minipage}
+
 \subsection{Iterated Local Search}
 \subsubsection{Zoekoperator}
 Voor het implementeren van \textit{iterated local search} is het nodig geweest de zoekoperator iets aan te passen, of beter gezegd: een variant op de zoekfunctie toe te voegen. 
@@ -100,6 +104,15 @@ RandomZoekOperator (Sudoku)
 \end{lstlisting}
 \end{minipage}
 
+\subsubsection{Zoek algoritme}
+Gebruik makend van de hierboven beschreven zoekoperator(s) (zowel de willekeurige als de deterministische versie), is de implementatie van \textit{iterated local search} als volgt:
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+// Pseudo-code voor iterated local search implementatie
+\end{lstlisting}
+\end{minipage}
+
 \section{Constraint Satisfaction}
 \subsection{Backtracking}
 \subsection{Forward Checking}
@@ -107,9 +120,15 @@ RandomZoekOperator (Sudoku)
 \chapter{Experimentele resultaten}
 \section{Hill-climbing}
 \subsection{Algemene observaties}
+\subsubsection{Effici\"{e}ntie}
+(Rekentijd en aantal toestanden tot lokaal optimum)
 \subsubsection{Accepteren gelijke toestanden}
 \subsection{Random Restart}
+\subsubsection{Effici\"{e}ntie}
+(Rekentijd en aantal toestanden tot globaal optimum)
 \subsection{Iterated Local Search}
+\subsubsection{Effici\"{e}ntie}
+(Rekentijd en aantal toestanden tot globaal optimum)
 \section{Constraint Satisfaction}
 \subsection{Backtracking}
 \subsection{Forward Checking}
