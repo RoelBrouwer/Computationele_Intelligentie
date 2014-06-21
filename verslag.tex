@@ -1,4 +1,5 @@
 \documentclass[]{report}
+\usepackage[margin=1.0in]{geometry}
 
 
 % Title Page
@@ -38,6 +39,64 @@
 \chapter{Implementatie algoritmen}
 \section{Hill-climbing}
 \subsection{Algemeen}
+\subsubsection{Representatie en bepalen begintoestand}
+Sudoku's zijn gerepresenteerd als een dubbel array ($n \times n$)  van cijfers (1 t/m $n$). Probleemtoestanden zijn volledig ingevulde sudoku's, wat betekent dat er nog iets met de input moet gebeuren om een begintoestand te verkrijgen.
+
+De lege vakjes in de sudoku worden gevuld door een willekeurig getal dat nog niet in het $n \times n$ blok voorkomt. Welk getal in het vakje terecht komt wordt bepaald door de volgende functie:
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+ZoekVulling(AlGevuld)
+	// AlGevuld is een boolean array, met voor elk getal dat
+	// in een n bij n blok moet voorkomen een positie.
+	// AantalOngevuld is een variabele waarin het aantal nog
+	// ongevulde vakjes is opgeslagen.
+	TeVullen = (int)(randomFloat(0, 1) * AantalOngevuld);
+	count = 0;
+	// Tot is exclusief.
+	for i = 0 tot n
+		if (!AlGevuld[i])
+			if(count == TeVullen)
+				return i + 1;
+			else 
+				j++;
+\end{lstlisting}
+\end{minipage}
+
+Het resultaat is een volledig gevulde begintoestand.
+
+\subsubsection{Evaluatie}
+Het is nodig om toestanden te beoordelen, zodat ze vergeleken kunnen worden en we daadwerkelijk kunnen klimmen.
+
+De onderstaande evaluatiefunctie doet dat door het aantal missende cijfers in alle rijen en kolommen bij elkaar op te tellen:
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+Evalueer (Sudoku)
+	TeReturnen = 0;
+	contains = boolean[n * n];
+	// Telt alle ontbrekende cijfers in de rijen op.
+	for i = 0 tot n * n
+		for k = 0 tot n * n 
+			contains[k] = false;
+		for j = 0 tot n * n
+			contains[Sudoku[i][j] - 1] = true;
+		for k = 0 tot n * n
+			if(!contains[k]) 
+				TeReturnen++;
+	// Telt alle ontbrekende cijfers in de kolommen op.
+	for i = 0 tot n * n
+		for k = 0 tot n * n
+			contains[k] = false;
+		for j = 0 tot n * n
+			contains[Sudoku[j][i] - 1] = true;
+		for k = 0 tot n * n
+			if(!contains[k]) 
+				TeReturnen++;
+	return TeReturnen;
+\end{lstlisting}
+\end{minipage}
+
 \subsubsection{Zoekoperator}
 Het bepalen van de volgende toestand in het \textit{hill-climbing} gebeurt aan de hand van de zoekoperator (hieronder in pseudo-code uitgewerkt). Deze geeft een nieuwe sudoku terug, die van de oude verschilt op twee vakjes: de eerste verwisseling die een verbetering opleverde in de evaluatiewaarde van de sudoku.
 
@@ -71,12 +130,28 @@ ZoekOperator (Sudoku)
 	return Sudoku;
 \end{lstlisting}
 \end{minipage}
+
+Een lokaal optimum (of plateau) is gevonden op het moment dat de zoekoperator de sudoku onveranderd teruggeeft: alle successor-toestanden zijn dan immers slechter dan of even goed als de huidige toestand.
+
 \subsection{Random Restart}
 Met het klaarstaan van de zoekoperator die in de vorige sectie besproken is, is het implementeren van \textit{random restart} relatief eenvoudig. In pseudo-code ziet dat er als volgt uit:
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
-// Pseudo-code voor random restart implementatie
+RandomRestart (HuidigeSudoku, Input)
+	// Input is de originele input waaruit de begintoestand gehaald is.
+	// Totdat een globaal optimum is gevonden, blijven we zoeken.
+	while (Evalueer(HuidigeSudoku) > 0)
+		NieuweSudoku = ZoekOperator(HuidigeSudoku);
+		// Als een lokaal optimum wordt bereikt, herstarten.
+		if (HuidigeSudoku == NieuweSudoku)
+			// Maak een nieuwe begintoestand en begin opnieuw.
+			HuidigeSudoku = Sudoku(n, Input);
+		else
+			// Anders gaan we door met de gevonden toestand. 
+			HuidigeSudoku = NieuweSudoku;
+	// Een globaal optimum is gevonden.
+	Print(HuidigeSudoku);
 \end{lstlisting}
 \end{minipage}
 
@@ -109,7 +184,20 @@ Gebruik makend van de hierboven beschreven zoekoperator(s) (zowel de willekeurig
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
-// Pseudo-code voor iterated local search implementatie
+IteratedLocalSearch (HuidigeSudoku)
+	// Totdat een globaal optimum is gevonden, blijven we zoeken.
+	while (Evalueer(HuidigeSudoku) > 0)
+		NieuweSudoku = ZoekOperator(HuidigeSudoku);
+		// Als een lokaal optimum wordt bereikt, daar weglopen.
+		if(HuidigeSudoku == NieuweSudoku)
+			// Maak een random walk van S lang, S kan gevarieerd worden.
+			for i = 0 tot S
+				HuidigeSudoku = RandomZoekOperator(HuidigeSudoku);
+		else 
+			// Anders gaan we door met de gevonden toestand.
+			HuidigeSudoku = NieuweSudoku;
+	// Een globaal optimum is gevonden.
+	Print(HuidigeSudoku);
 \end{lstlisting}
 \end{minipage}
 
