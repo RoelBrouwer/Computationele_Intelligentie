@@ -82,7 +82,8 @@ public class Puzzel {
 			{
 				//System.out.println("Lokaal maximum gevonden!");
 				//System.out.println("Aantal stappen: " + tellerLok);
-				//System.out.println("Tijd: " + tijdLok);
+				//long duurLok = System.currentTimeMillis() - tijdLok;
+				//System.out.println("Tijd: " + duurLok);
 				//System.out.println("Evalueerfunctie: " + sudoku.evalueer());
 				//System.out.println(sudoku);
 				//System.out.println();
@@ -98,7 +99,8 @@ public class Puzzel {
 		System.out.println("Globaal optimum: ");
 		System.out.println("Aantal stappen in totaal: " + tellerGlob);
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
-		System.out.println("Tijd in totaal: "+ tijdGlob);
+		long duurGlob = System.currentTimeMillis() - tijdGlob;
+		System.out.println("Tijd in totaal: "+ duurGlob);
 		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
 		System.out.println(sudoku);
 	}
@@ -123,7 +125,8 @@ public class Puzzel {
 			{
 				//System.out.println("Lokaal maximum gevonden!");
 				//System.out.println("Aantal stappen: " + tellerLok);
-				//System.out.println("Tijd: " + tijdLok);
+				//long duurLok = System.currentTimeMillis() - tijdLok;
+				//System.out.println("Tijd: " + duurLok);
 				//System.out.println("Evalueerfunctie: " + sudoku.evalueer());
 				//System.out.println(sudoku);
 				//System.out.println();
@@ -138,7 +141,8 @@ public class Puzzel {
 		System.out.println("Globaal optimum: ");
 		System.out.println("Aantal stappen in totaal: " + tellerGlob);
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
-		System.out.println("Tijd in totaal: "+ tijdGlob);
+		long duur = System.currentTimeMillis() - tijdGlob;
+		System.out.println("Tijd in totaal: "+ duurGlob);
 		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
 		System.out.println(sudoku);
 	}
