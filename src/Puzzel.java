@@ -71,13 +71,21 @@ public class Puzzel {
 	public static void iteratedLocalSearch(Sudoku sudoku)
 	{
 		Sudoku nieuwesudoku;
-		while (sudoku.evalueer() > 0)
+		int tellerGlob;
+		int tellerLok;
+		long tijdGlob = System.currentTimeMillis();
+		long tijdLok = System.currentTimeMillis();
+		for(tellerGlob = 0, tellerLok = 0; sudoku.evalueer() > 0; tellerGlob++, tellerLok++) 
 		{
 			nieuwesudoku = zoekoperator(sudoku);
-			if(sudoku == nieuwesudoku) 
+			if(nieuwesudoku == null) 
 			{
-				System.out.println("Lokaal maximum: ");
-				System.out.println(sudoku);
+				//System.out.println("Lokaal maximum gevonden!");
+				//System.out.println("Aantal stappen: " + tellerLok);
+				//System.out.println("Tijd: " + tijdLok);
+				//System.out.println("Evalueerfunctie: " + sudoku.evalueer());
+				//System.out.println(sudoku);
+				//System.out.println();
 				// Random walk van s lang, s is bovenaan deze file in te stellen.
 				for (int i = 0; i < s; i++)
 				{
@@ -88,6 +96,10 @@ public class Puzzel {
 				sudoku = nieuwesudoku;
 		}
 		System.out.println("Globaal optimum: ");
+		System.out.println("Aantal stappen in totaal: " + tellerGlob);
+		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
+		System.out.println("Tijd in totaal: "+ tijdGlob);
+		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
 		System.out.println(sudoku);
 	}
 	
@@ -96,10 +108,8 @@ public class Puzzel {
 		Sudoku nieuwesudoku;		
 		int tellerGlob;
 		int tellerLok;
-		int aantalLokaalOptima = 0;
 		long tijdGlob = System.currentTimeMillis();
 		long tijdLok = System.currentTimeMillis();
-		long duurLok;
 		
 		for(tellerGlob = 0, tellerLok = 0; sudoku.evalueer() > 0; tellerGlob++, tellerLok++) 
 		{
@@ -109,20 +119,18 @@ public class Puzzel {
 			//System.out.println(nieuwesudoku);
 			
 			//indien een lokaal optimum wordt bereikt
-			if(sudoku == nieuwesudoku) 
+			if(nieuwesudoku == null) 
 			{
-				System.out.println("Lokaal maximum gevonden!");
-				System.out.println("Aantal stappen: " + tellerLok);
-				duurLok = System.currentTimeMillis() - tijdLok;
-				System.out.println("Tijd: " + duurLok);
-				System.out.println("Evalueerfunctie: " + sudoku.evalueer());
+				//System.out.println("Lokaal maximum gevonden!");
+				//System.out.println("Aantal stappen: " + tellerLok);
+				//System.out.println("Tijd: " + tijdLok);
+				//System.out.println("Evalueerfunctie: " + sudoku.evalueer());
 				//System.out.println(sudoku);
-				System.out.println();
+				//System.out.println();
 				
 				// reset voor de volgende Hill-climb search.
 				sudoku = new Sudoku(n,sud);
 				tellerLok = 0;
-				aantalLokaalOptima++;
 				tijdLok = System.currentTimeMillis();
 			}
 			else sudoku = nieuwesudoku;
@@ -130,17 +138,13 @@ public class Puzzel {
 		System.out.println("Globaal optimum: ");
 		System.out.println("Aantal stappen in totaal: " + tellerGlob);
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
-		long duur = System.currentTimeMillis() - tijdGlob;
-		System.out.println("Tijd in totaal: "+ duur);
-		long duur2 = System.currentTimeMillis() - tijdLok;
-		System.out.println("Tijd sinds begin hill-climb: " + duur2);
-		System.out.println("Aantal lokaal optima bereikt: " + aantalLokaalOptima);
+		System.out.println("Tijd in totaal: "+ tijdGlob);
+		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
 		System.out.println(sudoku);
 	}
 	
 	public static Sudoku zoekoperator(Sudoku sudoku) {
 		int eval = sudoku.evalueer();
-		Sudoku nieuw;
 		
 		// swappen gaat per nxn-blok.
 
@@ -162,10 +166,19 @@ public class Puzzel {
 										&& (sudoku.getGrid()[g+k][h+l].getVariabel())) 
 									// want je kan niet vakje met zichzelf verwisselen, en de vakjes moeten variabel zijn
 								{ 
-									nieuw = sudoku.verwissel(g+i, h+j, g+k, h+l);
-									
-									if (nieuw.evalueer() < eval) 
-										return nieuw;
+
+									// Verwissel de vakjes
+									sudoku.verwissel(g+i, h+j, g+k, h+l);
+									// Test of het beter is
+									if (sudoku.evalueer() < eval)
+									{
+										return sudoku;
+									}
+									else
+									{
+										// Anders: wissel ze terug
+										sudoku.verwissel(g+i, h+j, g+k, h+l);
+									}
 								}
 							}
 						}
@@ -173,11 +186,10 @@ public class Puzzel {
 				}
 			}
 		}
-		return sudoku;
+		return null;
 	}
 	
 	public static Sudoku randomZoekOperator(Sudoku sudoku) {
-		Sudoku nieuw;
 		int g = randomGen.nextInt(n) * 3;
 		int h = randomGen.nextInt(n) * 3;
 		int i = randomGen.nextInt(n);
@@ -196,8 +208,8 @@ public class Puzzel {
 			k = randomGen.nextInt(n);
 			l = randomGen.nextInt(n);
 		}
-		nieuw = sudoku.verwissel(g + i, h + j, g + k, h + l);
-		return nieuw;
+		sudoku.verwissel(g + i, h + j, g + k, h + l);
+		return sudoku;
 	}
 	
 	private static boolean ilsOfRrhc() {
