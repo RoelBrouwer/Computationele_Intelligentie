@@ -133,8 +133,8 @@ public class Sudoku {
 				for (int k = j + 1; k < n * n; k++)
 				{
 					Constraint add = new Constraint(getallen[i][j], getallen[i][k]);
-					constraints[i][j][n - 1 + k - 1] = add;
-					constraints[i][k][n - 1 + j] = add;
+					constraints[i][j][n * n - 1 + k - 1] = add;
+					constraints[i][k][n * n - 1 + j] = add;
 				}
 			}
 		}
@@ -154,8 +154,8 @@ public class Sudoku {
 							for (int j = h + 1; j < n; j++)
 							{
 								Constraint add = new Constraint(getallen[l * 3 + f][k * 3 + h], getallen[l * 3 + i][k * 3 + j]);
-								constraints[l * 3 + f][k * 3 + h][2 * n - 2 + ((i - f) - 1) * 2 + (j - h - 1)] = add;
-								constraints[l * 3 + i][k * 3 + j][2 * n - 2 + 2 * f + ((i - f) - 1) * 2 + (j - h - 1)] = add;
+								constraints[l * 3 + f][k * 3 + h][2 * (n * n) - 2 + 2 * f + ((i - f) - 1) * 2 + (j - h - 1)] = add;
+								constraints[l * 3 + i][k * 3 + j][2 * (n * n) - 2 + 2 * f + ((i - f) - 1) * 2 + (j - h - 1)] = add;
 							}
 						}
 					}
