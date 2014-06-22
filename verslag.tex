@@ -105,13 +105,11 @@ Het bepalen van de volgende toestand in het \textit{hill-climbing} gebeurt aan d
 ZoekOperator (Sudoku)
 	// eval bevat de waarde die de evaluatiefunctie aan de sudoku geeft.
 	eval = Sudoku.evalueer();
-	// Verwisselen gaat per nxn-blok. g en h representeren het blok.
-	// Het zijn constantes die bij de variabelen die de positie van
-	// de vakjes binnen het blok representeren (i, j, k en l) worden
-	// opgeteld om het juiste vakje te kunnen identificeren.
-	// Tot is exclusief. In de volgende geneste loops worden alle
-	// wissel-mogelijkheden afgelopen tot er een gevonden is die de
-	// huidige toestand verbetert.
+	// Verwisselen gaat per nxn-blok. g en h representeren het blok. Het zijn constantes die bij 
+	// de variabelen die de positie van de vakjes binnen het blok representeren (i, j, k en l) 
+	// worden opgeteld om het juiste vakje te kunnen identificeren. Tot is exclusief. In de 
+	// volgende geneste loops worden alle wissel-mogelijkheden afgelopen tot er een gevonden is 
+	// die de huidige toestand verbetert.
 	for g = 0 tot n*n (ophogen per 3) 
 		for h = 0 tot n*n (ophogen per 3)
 			for i = 0 tot n 
@@ -135,6 +133,8 @@ ZoekOperator (Sudoku)
 \end{minipage}
 
 Een lokaal optimum (of plateau) is gevonden op het moment dat de zoekoperator niets teruggeeft: alle successor-toestanden zijn dan immers slechter dan of even goed als de huidige toestand.
+
+Het is noodzakelijk dat deze zoekoperator-functie systematisch alle mogelijk successors langsgaat. Op die manier kunnen we er zeker van zijn dat geen van de successor-toestanden meer een verbetering is, en weten we dat we in een lokaal optimum (of plateau) zitten. 
 
 \subsection{Random Restart}
 Met het klaarstaan van de zoekoperator die in de vorige sectie besproken is, is het implementeren van \textit{random restart} relatief eenvoudig. In pseudo-code ziet dat er als volgt uit:
