@@ -1,5 +1,5 @@
 
-public class Sudoku implements Cloneable {
+public class Sudoku {
 	
 	IVakje[][] getallen; 
 	
@@ -69,7 +69,7 @@ public class Sudoku implements Cloneable {
 		return -1;
 	}
 	
-	private int FirstTrue(boolean[] array)
+	/*private int FirstTrue(boolean[] array)
 	{
 		for (int i = 0; i < array.length; i++)
 		{
@@ -77,7 +77,7 @@ public class Sudoku implements Cloneable {
 				return i + 1;
 		}
 		return -1;
-	}
+	}*/
 	
 	private void RandomVullen(int n) 
 	{
@@ -132,19 +132,14 @@ public class Sudoku implements Cloneable {
 		return tereturnen;
 	}
 	
-	public Sudoku verwissel(int r1, int k1, int r2, int k2) {
-		Sudoku nieuw;
-		try {
-			nieuw =(Sudoku) this.clone();
-		} catch (CloneNotSupportedException e) {throw new Error();}
-		
+	public Sudoku verwissel(int r1, int k1, int r2, int k2) {		
 		int temp = this.getallen[r1][k1].getWaarde();
 		
-		nieuw.getGrid()[r1][k1].setWaarde(this.getallen[r2][k2].getWaarde());
+		this.getallen[r1][k1].setWaarde(this.getallen[r2][k2].getWaarde());
 		
-		nieuw.getGrid()[r2][k2].setWaarde(temp);
+		this.getallen[r2][k2].setWaarde(temp);
 		
-		return nieuw;
+		return this;
 	}
 	
 	public IVakje[][] getGrid() {
