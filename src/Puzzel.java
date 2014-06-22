@@ -112,6 +112,7 @@ public class Puzzel {
 		int tellerLok;
 		long tijdGlob = System.currentTimeMillis();
 		long tijdLok = System.currentTimeMillis();
+		int aantalLokaleOptima = 0;
 		
 		for(tellerGlob = 0, tellerLok = 0; sudoku.evalueer() > 0; tellerGlob++, tellerLok++) 
 		{
@@ -135,15 +136,20 @@ public class Puzzel {
 				sudoku = new Sudoku(n,sud);
 				tellerLok = 0;
 				tijdLok = System.currentTimeMillis();
+				aantalLokaleOptima++;
 			}
 			else sudoku = nieuwesudoku;
 		}
+		
+		long duurGlob = System.currentTimeMillis() - tijdGlob;
+		long duurLok = System.currentTimeMillis() - tijdLok;
+		
 		System.out.println("Globaal optimum: ");
 		System.out.println("Aantal stappen in totaal: " + tellerGlob);
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
-		long duurGlob = System.currentTimeMillis() - tijdGlob;
 		System.out.println("Tijd in totaal: "+ duurGlob);
-		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
+		System.out.println("Tijd sinds begin hill-climb: " + duurLok);
+		System.out.println("Aantal lokale optima bereikt: " + aantalLokaleOptima);
 		System.out.println(sudoku);
 	}
 	
