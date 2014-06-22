@@ -111,19 +111,19 @@ public class Puzzel {
 			//indien een lokaal optimum wordt bereikt
 			if(sudoku == nieuwesudoku) 
 			{
-				System.out.println("Lokaal maximum gevonden!");
-				System.out.println("Aantal stappen: " + tellerLok);
-				duurLok = System.currentTimeMillis() - tijdLok;
-				System.out.println("Tijd: " + duurLok);
-				System.out.println("Evalueerfunctie: " + sudoku.evalueer());
+				//System.out.println("Lokaal maximum gevonden!");
+				//System.out.println("Aantal stappen: " + tellerLok);
+				//duurLok = System.currentTimeMillis() - tijdLok;
+				//System.out.println("Tijd: " + duurLok);
+				//System.out.println("Evalueerfunctie: " + sudoku.evalueer());
 				//System.out.println(sudoku);
-				System.out.println();
+				//System.out.println();
 				
 				// reset voor de volgende Hill-climb search.
 				sudoku = new Sudoku(n,sud);
-				tellerLok = 0;
+				//tellerLok = 0;
 				aantalLokaalOptima++;
-				tijdLok = System.currentTimeMillis();
+				//tijdLok = System.currentTimeMillis();
 			}
 			else sudoku = nieuwesudoku;
 		}
