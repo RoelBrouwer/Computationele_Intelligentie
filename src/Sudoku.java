@@ -152,16 +152,102 @@ public class Sudoku {
 					{
 						for (int i = f + 1; i < n; i++)
 						{
-							for (int j = h + 1; j < n; j++)
+							for (int j = 0; j < n; j++)
 							{
-								Constraint add = new Constraint(getallen[l * 3 + f][k * 3 + h], getallen[l * 3 + i][k * 3 + j]);
-								constraints[l * 3 + f][k * 3 + h][2 * (n * n) - 2 + 2 * f + ((i - f) - 1) * 2 + (j - h - 1)] = add;
-								constraints[l * 3 + i][k * 3 + j][2 * (n * n) - 2 + 2 * f + ((i - f) - 1) * 2 + (j - h - 1)] = add;
+								if (h != j)
+								{
+									Constraint add = new Constraint(getallen[l * 3 + f][k * 3 + h], getallen[l * 3 + i][k * 3 + j]);
+									constraints[l * 3 + f][k * 3 + h][2 * (n * n) - 3 + hulpFunctieIndices(f, h, i, j)] = add;
+									constraints[l * 3 + i][k * 3 + j][2 * (n * n) - 3 + hulpFunctieIndices2(f, h, i, j)] = add;
+								}
 							}
 						}
 					}
 				}
 			}
+		}
+	}
+	
+	// Hulpfunctie die de Indices waarop de blok-constraint terecht moeten komen helpt berekenen
+	private int hulpFunctieIndices(int f, int h, int i, int j) {
+		if (f == 0) {
+			if (h == 0) {
+				if (i == 1) {
+					if (j == 1) { return 1; 
+					} else { return 2; }
+				} else  {
+					if (j == 1) { return 3; 
+					} else { return 4; }
+				}
+			} else { if (h == 1){
+				if (i == 1) {
+					if (j == 0) { return 1; 
+					} else { return 2; }
+				} else  {
+					if (j == 0) { return 3; 
+					} else { return 4; }
+				}
+			} else {
+				if (i == 1) {
+					if (j == 0) { return 1; 
+					} else { return 2; }
+				} else  {
+					if (j == 0) { return 3; 
+					} else { return 4; }
+				}
+			} }
+		} else {
+			if (h == 0) {
+				if (j == 1) { return 3; 
+				} else { return 4; }
+			} else { if (h == 1){
+				if (j == 0) { return 3; 
+				} else { return 4; }
+			} else {
+				if (j == 0) { return 3; 
+				} else { return 4; }
+			} }
+		}
+	}
+	
+	private int hulpFunctieIndices2(int f, int h, int i, int j) {
+		if (f == 0) {
+			if (h == 0) {
+				if (i == 1) {
+					if (j == 1) { return 1; 
+					} else { return 1; }
+				} else  {
+					if (j == 1) { return 1; 
+					} else { return 1; }
+				}
+			} else { if (h == 1){
+				if (i == 1) {
+					if (j == 0) { return 1; 
+					} else { return 2; }
+				} else  {
+					if (j == 0) { return 1; 
+					} else { return 2; }
+				}
+			} else {
+				if (i == 1) {
+					if (j == 0) { return 2; 
+					} else { return 2; }
+				} else  {
+					if (j == 0) { return 2; 
+					} else { return 2; }
+				}
+			} }
+		} else {
+			if (h == 0) {
+				if (j == 1) { return 3; 
+				} else { return 3; }
+			} else { if (h == 1){
+				if (j == 0) { return 3; 
+				} else { return 4; }
+			} else {
+				if (j == 0) { return 4; 
+				} else { return 4; }
+			} }
 		}
 	}
 	
