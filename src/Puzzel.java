@@ -9,7 +9,7 @@ public class Puzzel {
 	static int n; 
 	static int s = 30;
 	static Random randomGen = new Random();
-	static boolean ils;
+	static String mode;
 	
 	public static void main(String[] args) {
 		
@@ -52,19 +52,22 @@ public class Puzzel {
 		}
 		System.out.println("\n");
 		
-		ils = ilsOfRrhc();
+		mode = determineMethod();
 		
 		Sudoku sudoku = new Sudoku(n, sud);
 		System.out.println(sudoku);
 		System.out.println(sudoku.evalueer());
 		
-		if (ils)
+		switch (mode)
 		{
-			iteratedLocalSearch(sudoku);
-		}
-		else
-		{
-			randomRestart(sudoku, sud);
+			case "i":
+				iteratedLocalSearch(sudoku);
+				break;
+			case "r":
+				randomRestart(sudoku, sud);
+				break;
+			default:
+				break;
 		}
 	}
 	
@@ -223,12 +226,12 @@ public class Puzzel {
 		return sudoku;
 	}
 	
-	private static boolean ilsOfRrhc() {
+	private static String determineMethod() {
 		System.out.println("Wil je Iterated Local Search? Voer dan een \"i\" in. \nWil je Random Restart Hill-Climbing? Voer dan een \"r\" in.");
 		String s = readLine();
-		if(s.equals("i")) return true;
-		else if(s.equals("r")) return false;
-		else return ilsOfRrhc();
+		if(s.equals("i")) return "i";
+		else if(s.equals("r")) return "r";
+		else return determineMethod();
 	}
 	
 	public static String readLine()

@@ -105,13 +105,11 @@ Het bepalen van de volgende toestand in het \textit{hill-climbing} gebeurt aan d
 ZoekOperator (Sudoku)
 	// eval bevat de waarde die de evaluatiefunctie aan de sudoku geeft.
 	eval = Sudoku.evalueer();
-	// Verwisselen gaat per nxn-blok. g en h representeren het blok.
-	// Het zijn constantes die bij de variabelen die de positie van
-	// de vakjes binnen het blok representeren (i, j, k en l) worden
-	// opgeteld om het juiste vakje te kunnen identificeren.
-	// Tot is exclusief. In de volgende geneste loops worden alle
-	// wissel-mogelijkheden afgelopen tot er een gevonden is die de
-	// huidige toestand verbetert.
+	// Verwisselen gaat per nxn-blok. g en h representeren het blok. Het zijn constantes die bij 
+	// de variabelen die de positie van de vakjes binnen het blok representeren (i, j, k en l) 
+	// worden opgeteld om het juiste vakje te kunnen identificeren. Tot is exclusief. In de 
+	// volgende geneste loops worden alle wissel-mogelijkheden afgelopen tot er een gevonden is 
+	// die de huidige toestand verbetert.
 	for g = 0 tot n*n (ophogen per 3) 
 		for h = 0 tot n*n (ophogen per 3)
 			for i = 0 tot n 
@@ -121,17 +119,22 @@ ZoekOperator (Sudoku)
 							if ((i,j) en (k,l) representeren niet hetzelfde vakje EN
 							    (i,j) en (k,l) zijn variabele vakjes)
 								// Verkrijg de nieuwe sudoku door de vakjes te verwisselen.
-								Nieuw = Sudoku.verwissel(g + i, h + j, g + k, h + l)
+								Sudoku.verwissel(g + i, h + j, g + k, h + l);
 								// Als de nieuwe beter is zijn we klaar.
-								if (Nieuw.evalueer() > eval) 
-									return Nieuw;
+								if (Sudoku.evalueer() > eval) 
+									return Sudoku;
+								// Anders maken we de verwisseling ongedaan.
+								else
+									Sudoku.verwissel(g + i, h + j, g + k, h + l);
 	// Als er niks verwisseld kan worden, zitten we in een lokaal
-	// optimum. We geven de oorspronkelijke sudoku terug.
-	return Sudoku;
+	// optimum. We geven niets terug.
+	return null;
 \end{lstlisting}
 \end{minipage}
 
-Een lokaal optimum (of plateau) is gevonden op het moment dat de zoekoperator de sudoku onveranderd teruggeeft: alle successor-toestanden zijn dan immers slechter dan of even goed als de huidige toestand.
+Een lokaal optimum (of plateau) is gevonden op het moment dat de zoekoperator niets teruggeeft: alle successor-toestanden zijn dan immers slechter dan of even goed als de huidige toestand.
+
+Het is noodzakelijk dat deze zoekoperator-functie systematisch alle mogelijk successors langsgaat. Op die manier kunnen we er zeker van zijn dat geen van de successor-toestanden meer een verbetering is, en weten we dat we in een lokaal optimum (of plateau) zitten. 
 
 \subsection{Random Restart}
 Met het klaarstaan van de zoekoperator die in de vorige sectie besproken is, is het implementeren van \textit{random restart} relatief eenvoudig. In pseudo-code ziet dat er als volgt uit:
@@ -144,7 +147,7 @@ RandomRestart (HuidigeSudoku, Input)
 	while (Evalueer(HuidigeSudoku) > 0)
 		NieuweSudoku = ZoekOperator(HuidigeSudoku);
 		// Als een lokaal optimum wordt bereikt, herstarten.
-		if (HuidigeSudoku == NieuweSudoku)
+		if (NieuweSudoku == null)
 			// Maak een nieuwe begintoestand en begin opnieuw.
 			HuidigeSudoku = Sudoku(n, Input);
 		else
@@ -189,7 +192,7 @@ IteratedLocalSearch (HuidigeSudoku)
 	while (Evalueer(HuidigeSudoku) > 0)
 		NieuweSudoku = ZoekOperator(HuidigeSudoku);
 		// Als een lokaal optimum wordt bereikt, daar weglopen.
-		if(HuidigeSudoku == NieuweSudoku)
+		if (NieuweSudoku == null)
 			// Maak een random walk van S lang, S kan gevarieerd worden.
 			for i = 0 tot S
 				HuidigeSudoku = RandomZoekOperator(HuidigeSudoku);
