@@ -70,7 +70,8 @@ public class Sudoku {
 	Sudoku(int[][] sud)
 	{
 		// Variabelen en domeinen
-		int n = sud.length;
+		int n = (int)Math.sqrt(sud.length);
+		System.out.println(n);
 		getallen = new Variabelen[n*n][n*n];
 		boolean[] alltrue = new boolean[n * n]; 
 		boolean[] allfalse = new boolean[n * n];
@@ -94,9 +95,9 @@ public class Sudoku {
 						}
 						else
 						{
-							allfalse[waarde] = true;
+							allfalse[waarde-1] = true;
 							getallen[l * n + i][k * n + j] = new Variabelen(waarde, allfalse, l * n + i, k * n + j);
-							allfalse[waarde] = false;
+							allfalse[waarde-1] = false;
 						}
 					}
 				}
@@ -224,6 +225,68 @@ public class Sudoku {
 			}
 		}
 		return tereturnen;
+	}
+	
+	// om te kijken of ieder vakje van de sudoku is ingevuld
+	public boolean volledigIngevuld() {
+		for(int i = 0; i < getallen.length; i++) {
+			for(int j = 0; j < getallen[0].length; j++) {
+				if(getallen[i][j].getWaarde() == 0) return false;
+			}
+		}
+		return true;
+	}
+	
+	// kijkt of er niet twee dezelfde cijfers in een rij, kolom of blok staan
+	public boolean consistent() {
+		//eerst de rijen
+		boolean[] ingevuld = new boolean[getallen.length];
+		
+		for(int i = 0; i < getallen.length; i++) {
+			for(int k = 0; k < ingevuld.length; k++) ingevuld[k] = false;
+
+			for(int j = 0; j < getallen[0].length; j++) {
+				if(getallen[i][j].getWaarde() != 0) {
+					if(ingevuld[getallen[i][j].getWaarde()-1]) return false;
+					else ingevuld[getallen[i][j].getWaarde()-1] = true;
+				}
+			}
+		}
+		
+		//dan de kolommen
+		for(int i = 0; i < getallen.length; i++) {
+			for(int k = 0; k < ingevuld.length; k++) ingevuld[k] = false;
+
+			for(int j = 0; j < getallen[0].length; j++) {
+				if(getallen[j][i].getWaarde() != 0) {
+					if(ingevuld[getallen[j][i].getWaarde()-1]) return false;
+					else ingevuld[getallen[j][i].getWaarde()-1] = true;
+				}
+			}
+		}
+		
+		int n = (int)Math.sqrt(getallen.length);
+		// dan de blokken
+		for (int g = 0; g <= n * (n - 1); g += n) 
+		{
+			for (int h = 0; h <= n * (n - 1); h += n) 
+			{
+				for(int m = 0; m < ingevuld.length; m++) ingevuld[m] = false;
+				
+				for (int i = 0; i < n; i++) 
+				{
+					for (int j = 0; j < n; j++) 
+					{
+						if(getallen[g+i][h+j].getWaarde() != 0) 
+						{
+							if(ingevuld[getallen[g+i][h+j].getWaarde()-1]) return false;
+							else ingevuld[getallen[g+i][h+j].getWaarde()-1] = true;
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	// toString() functie

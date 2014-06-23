@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
+import java.util.TreeSet;
+import java.io.*;
 
 public class Puzzel {
 
@@ -10,9 +12,11 @@ public class Puzzel {
 	static int s = 30;
 	static Random randomGen = new Random();
 	static String mode;
+	static FileWriter fw;
 	
 	public static void main(String[] args) {
-		
+	
+		try{fw = new FileWriter("output.txt"); fw.write("hoi");} catch(IOException e){}
 		BufferedReader reader = null;
 		n = 0;
 		int[][] sud = {{0}};
@@ -54,9 +58,11 @@ public class Puzzel {
 		
 		mode = determineMethod();
 		
-		Sudoku sudoku = new Sudoku(n, sud);
+		Sudoku sudoku; 
+		if(mode.equals("b")) sudoku = new Sudoku(sud);
+		else sudoku = new Sudoku(n, sud);
 		System.out.println(sudoku);
-		System.out.println(sudoku.evalueer());
+		if(!mode.equals("b")) System.out.println(sudoku.evalueer());
 		
 		switch (mode)
 		{
@@ -65,6 +71,9 @@ public class Puzzel {
 				break;
 			case "r":
 				randomRestart(sudoku, sud);
+				break;
+			case "b":
+				backtracking(sudoku);
 				break;
 			default:
 				break;
@@ -226,11 +235,65 @@ public class Puzzel {
 		return sudoku;
 	}
 	
+	private static void backtracking(Sudoku sudoku) {
+		Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
+		
+		System.out.println("Oplossing gevonden!");
+		System.out.println(nieuwesudoku);
+	}
+	
+	private static Sudoku backtrackingRecursief(Sudoku sudoku) {
+		try {
+			if(sudoku.volledigIngevuld()) {
+				System.out.println("hoi");
+				return sudoku;
+			}
+				//fixen dat hij geen exception gooit om vakjes met 0
+			//System.out.println("heej");
+			IVakje vakje = vindVolgende(sudoku);
+			
+			for(int i = 0; i < vakje.getDomein().length; i++) {
+				if(vakje.elementInDomein(i+1)) {
+					vakje.setWaarde(i+1);
+					vakje.domeinelementToevoegen(i+1);
+
+					//sudoku.getGetallen()[i][j].setWaarde(x);
+					
+					if(sudoku.consistent()) {
+
+						//inferences(sudoku);
+						//if(inferences != null) inferencesNaarAssignment()
+						
+						Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
+						if(nieuwesudoku != null) return sudoku;
+					}
+					vakje.domeinelementVerwijderen(i+1);
+					vakje.setWaarde(0);
+					//voegWaardeWeerToeAanDomein();
+				}
+			}
+			
+			return null;
+		} catch (Exception e) {
+			try{fw.write(e.getMessage()); fw.write("heej"); fw.flush();} catch(IOException ex) {}
+		}
+		return null;
+		
+	}
+	
+	private static IVakje vindVolgende(Sudoku sudoku) {
+		for(int i = 0; i < sudoku.getGrid().length; i++) {
+			for(int j = 0; j < sudoku.getGrid()[0].length; j++) {
+				if(sudoku.getGrid()[i][j].domeinGrootte() > 1) return sudoku.getGrid()[i][j];
+			}
+		}
+		return null;
+	}
+	
 	private static String determineMethod() {
 		System.out.println("Wil je Iterated Local Search? Voer dan een \"i\" in. \nWil je Random Restart Hill-Climbing? Voer dan een \"r\" in.");
 		String s = readLine();
-		if(s.equals("i")) return "i";
-		else if(s.equals("r")) return "r";
+		if(s.equals("i") || s.equals("r") || s.equals("b")) return s;
 		else return determineMethod();
 	}
 	

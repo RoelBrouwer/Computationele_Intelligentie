@@ -1,8 +1,8 @@
 public class Variabelen implements IVakje {
-	int n;
-	boolean[] domein;
+	private int n;
+	private boolean[] domein;
 	// "Coordinaten" van het vakje.
-	int x, y;
+	private int x, y;
 	
 	public Variabelen(int n, boolean[] domein, int x, int y) {
 		this.n = n;
@@ -31,12 +31,17 @@ public class Variabelen implements IVakje {
 		return true;
 	}
 	
+	public boolean[] getDomein() {
+		return domein;
+	}
+	
 	public boolean gevuld() {
 		if (n == 0)
 			return false;
 		else
 			return true;
 	}
+	
 	
 	public void domeinelementToevoegen(int x) {
 		domein[x - 1] = true;
