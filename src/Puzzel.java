@@ -261,6 +261,7 @@ public class Puzzel {
 		
 		for(int i = 0; i < vakje.getDomein().length; i++) {
 			if(vakje.elementInDomein(i+1)) {
+				boolean[] bewaar = vakje.getDomein();
 				vakje.setWaarde(i+1);
 				vakje.domeinelementToevoegen(i+1);
 				//sudoku.getGetallen()[i][j].setWaarde(x);
@@ -272,8 +273,9 @@ public class Puzzel {
 					Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
 					if(nieuwesudoku != null) return nieuwesudoku;
 				}
-				vakje.domeinelementVerwijderen(i+1);
 				vakje.setWaarde(0);
+				vakje.setDomein(bewaar);
+				vakje.domeinelementVerwijderen(i+1);
 				//voegWaardeWeerToeAanDomein();
 			}
 		}

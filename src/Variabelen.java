@@ -17,6 +17,20 @@ public class Variabelen implements IVakje {
 	
 	public void setWaarde(int n) {
 		this.n = n;
+		if (n != 0)
+		{
+			for (int i = 0; i < domein.length; i++)
+			{
+				if (i == n - 1)
+				{
+					domein[i] = true;
+				}
+				else
+				{
+					domein[i] = false;
+				}
+			}
+		}
 	}
 	
 	public int getX() {
@@ -33,6 +47,10 @@ public class Variabelen implements IVakje {
 	
 	public boolean[] getDomein() {
 		return domein;
+	}
+	
+	public void setDomein(boolean[] domein) {
+		this.domein = domein;
 	}
 	
 	public boolean gevuld() {

@@ -26,4 +26,5 @@ public class Vast implements IVakje {
 	public int domeinGrootte(){return -1;}
 	public boolean elementInDomein(int x) {return false;}
 	public boolean[] getDomein() {return null;}
+	public void setDomein(boolean[] domein){}
 }

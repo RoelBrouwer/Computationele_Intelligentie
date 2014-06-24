@@ -11,5 +11,6 @@ public interface IVakje {
 	public int domeinGrootte();
 	public boolean elementInDomein(int x);
 	public boolean[] getDomein();
+	public void setDomein(boolean[] domein);
 
 }

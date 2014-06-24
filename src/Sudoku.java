@@ -103,12 +103,12 @@ public class Sudoku {
 				}
 			}
 		}
-		// To-Do: Constraints
-		// Elk vakje krijgt een eigen array met de constraints waar hij in voorkomt.
+			// Elk vakje krijgt een eigen array met de constraints waar hij in voorkomt.
 		// Dat zijn er 2(n * n - 1) + (n * n - (1 + 2(n - 1))). n * n -1 voor elk vakje in de rij,
 		// n * n -1 voor elk vakje in de kolom, en n * n voor alle vakjes in hetzelfde blok,
 		// behalve het vakje zelf (1) en de vakjes die al in de rij/kolom zitten (2(n - 1)).
-		constraints = new Constraint[n*n][n*n][2 * (n * n - 1) + (n * n - (1 + 2 * (n - 1)))];
+		// = (n - 1) * (n - 1)
+		constraints = new Constraint[n*n][n*n][2 * (n * n - 1) + ((n - 1) * (n - 1))];
 		// Eerst alle rijen
 		for (int i = 0; i < n * n; i++)
 		{
