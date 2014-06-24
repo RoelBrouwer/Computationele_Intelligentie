@@ -21,9 +21,9 @@ public class Vast implements IVakje {
 	{
 		return Integer.toString(n);
 	}
-	public void domeinelementToevoegen(int x){};
-	public void domeinelementVerwijderen(int x){};
-	public int domeinGrootte(){return -1};
-	public boolean elementInDomein(int x) {return false};
-	public boolean[] getDomein() return null;
+	public void domeinelementToevoegen(int x){}
+	public void domeinelementVerwijderen(int x){}
+	public int domeinGrootte(){return -1;}
+	public boolean elementInDomein(int x) {return false;}
+	public boolean[] getDomein() {return null;}
 }
