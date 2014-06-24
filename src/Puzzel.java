@@ -238,47 +238,44 @@ public class Puzzel {
 	private static void backtracking(Sudoku sudoku) {
 		Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
 		
-		System.out.println("Oplossing gevonden!");
-		System.out.println(nieuwesudoku);
+
+		if(nieuwesudoku != null) {
+			System.out.println("Oplossing gevonden!");
+			System.out.println(nieuwesudoku);
+		} else System.out.println("Geen oplossing.");
+		
 	}
 	
 	private static Sudoku backtrackingRecursief(Sudoku sudoku) {
-		try {
-			if(sudoku.volledigIngevuld()) {
-				System.out.println("hoi");
-				return sudoku;
-			}
-				//fixen dat hij geen exception gooit om vakjes met 0
-			//System.out.println("heej");
-			IVakje vakje = vindVolgende(sudoku);
-			
-			for(int i = 0; i < vakje.getDomein().length; i++) {
-				if(vakje.elementInDomein(i+1)) {
-					vakje.setWaarde(i+1);
-					vakje.domeinelementToevoegen(i+1);
-
-					//sudoku.getGetallen()[i][j].setWaarde(x);
-					
-					if(sudoku.consistent()) {
-
-						//inferences(sudoku);
-						//if(inferences != null) inferencesNaarAssignment()
-						
-						Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
-						if(nieuwesudoku != null) return sudoku;
-					}
-					vakje.domeinelementVerwijderen(i+1);
-					vakje.setWaarde(0);
-					//voegWaardeWeerToeAanDomein();
-				}
-			}
-			
-			return null;
-		} catch (Exception e) {
-			try{fw.write(e.getMessage()); fw.write("heej"); fw.flush();} catch(IOException ex) {}
+		if(sudoku.volledigIngevuld()) {
+			System.out.println("hoi");
+			return sudoku;
 		}
-		return null;
 		
+		//System.out.println("heej");
+		IVakje vakje = vindVolgende(sudoku);
+		
+		for(int i = 0; i < vakje.getDomein().length; i++) {
+			if(vakje.elementInDomein(i+1)) {
+				vakje.setWaarde(i+1);
+				vakje.domeinelementToevoegen(i+1);
+				//sudoku.getGetallen()[i][j].setWaarde(x);
+				
+				if(sudoku.consistent()) {
+					//inferences(sudoku);
+					//if(inferences != null) inferencesNaarAssignment()
+					
+					Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
+					if(nieuwesudoku != null) return sudoku;
+				}
+				vakje.domeinelementVerwijderen(i+1);
+				vakje.setWaarde(0);
+				//voegWaardeWeerToeAanDomein();
+			}
+		}
+		
+		return null;
+				
 	}
 	
 	private static IVakje vindVolgende(Sudoku sudoku) {
