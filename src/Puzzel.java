@@ -236,23 +236,27 @@ public class Puzzel {
 	}
 	
 	private static void backtracking(Sudoku sudoku) {
-		Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
+		try{ 	
+			Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
 		
-
-		if(nieuwesudoku != null) {
-			System.out.println("Oplossing gevonden!");
-			System.out.println(nieuwesudoku);
-		} else System.out.println("Geen oplossing.");
+		
+			if(nieuwesudoku != null) {
+				System.out.println("Oplossing gevonden!");
+				System.out.println(nieuwesudoku);
+			} else System.out.println("Geen oplossing.");
+		} catch (Exception e) {
+			System.out.println("Nullpointer");
+		}
 		
 	}
 	
-	private static Sudoku backtrackingRecursief(Sudoku sudoku) {
+	private static Sudoku backtrackingRecursief(Sudoku sudoku) throws Exception {
 		if(sudoku.volledigIngevuld()) {
 			System.out.println("hoi");
 			return sudoku;
 		}
 		
-		//System.out.println("heej");
+		System.out.println("heej");
 		IVakje vakje = vindVolgende(sudoku);
 		
 		for(int i = 0; i < vakje.getDomein().length; i++) {
@@ -266,24 +270,26 @@ public class Puzzel {
 					//if(inferences != null) inferencesNaarAssignment()
 					
 					Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
-					if(nieuwesudoku != null) return sudoku;
+					if(nieuwesudoku != null) return nieuwesudoku;
 				}
 				vakje.domeinelementVerwijderen(i+1);
 				vakje.setWaarde(0);
 				//voegWaardeWeerToeAanDomein();
 			}
 		}
-		
+		 System.out.println("hi");
+		 System.out.println();
 		return null;
 				
 	}
 	
-	private static IVakje vindVolgende(Sudoku sudoku) {
+	private static IVakje vindVolgende(Sudoku sudoku) throws Exception{
 		for(int i = 0; i < sudoku.getGrid().length; i++) {
 			for(int j = 0; j < sudoku.getGrid()[0].length; j++) {
 				if(sudoku.getGrid()[i][j].domeinGrootte() > 1) return sudoku.getGrid()[i][j];
 			}
 		}
+		System.out.println("Hiero!");
 		return null;
 	}
 	

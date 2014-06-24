@@ -314,7 +314,7 @@ public class Sudoku {
 	}
 	
 	// om te kijken of ieder vakje van de sudoku is ingevuld
-	public boolean volledigIngevuld() {
+	public boolean volledigIngevuld() throws Exception {
 		for(int i = 0; i < getallen.length; i++) {
 			for(int j = 0; j < getallen[0].length; j++) {
 				if(getallen[i][j].getWaarde() == 0) return false;
@@ -324,7 +324,7 @@ public class Sudoku {
 	}
 	
 	// kijkt of er niet twee dezelfde cijfers in een rij, kolom of blok staan
-	public boolean consistent() {
+	public boolean consistent() throws Exception {
 		//eerst de rijen
 		boolean[] ingevuld = new boolean[getallen.length];
 		
