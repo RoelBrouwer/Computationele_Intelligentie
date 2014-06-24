@@ -156,9 +156,9 @@ public class Sudoku {
 							{
 								if (h != j)
 								{
-									Constraint add = new Constraint(getallen[l * 3 + f][k * 3 + h], getallen[l * 3 + i][k * 3 + j]);
-									constraints[l * 3 + f][k * 3 + h][2 * (n * n) - 3 + hulpFunctieIndices(f, h, i, j)] = add;
-									constraints[l * 3 + i][k * 3 + j][2 * (n * n) - 3 + hulpFunctieIndices2(f, h, i, j)] = add;
+									Constraint add = new Constraint(getallen[l * n + f][k * n + h], getallen[l * n + i][k * n + j]);
+									constraints[l * n + f][k * n + h][2 * (n * n) - 3 + findNextFree(constraints, l * n + f, k * n + h, n)] = add;
+									constraints[l * n + i][k * n + j][2 * (n * n) - 3 + findNextFree(constraints, l * n + i, k * n + j, n)] = add;
 								}
 							}
 						}
@@ -168,87 +168,14 @@ public class Sudoku {
 		}
 	}
 	
-	// Hulpfunctie die de Indices waarop de blok-constraint terecht moeten komen helpt berekenen
-	private int hulpFunctieIndices(int f, int h, int i, int j) {
-		if (f == 0) {
-			if (h == 0) {
-				if (i == 1) {
-					if (j == 1) { return 1; 
-					} else { return 2; }
-				} else  {
-					if (j == 1) { return 3; 
-					} else { return 4; }
-				}
-			} else { if (h == 1){
-				if (i == 1) {
-					if (j == 0) { return 1; 
-					} else { return 2; }
-				} else  {
-					if (j == 0) { return 3; 
-					} else { return 4; }
-				}
-			} else {
-				if (i == 1) {
-					if (j == 0) { return 1; 
-					} else { return 2; }
-				} else  {
-					if (j == 0) { return 3; 
-					} else { return 4; }
-				}
-			} }
-		} else {
-			if (h == 0) {
-				if (j == 1) { return 3; 
-				} else { return 4; }
-			} else { if (h == 1){
-				if (j == 0) { return 3; 
-				} else { return 4; }
-			} else {
-				if (j == 0) { return 3; 
-				} else { return 4; }
-			} }
+	private int findNextFree(Constraint[][][] constraints, int first, int second, int n)
+	{
+		int ret = 0;
+		while (constraints[first][second][2 * (n * n) - 3 + ret] != null)
+		{
+			ret++;
 		}
-	}
-	
-	private int hulpFunctieIndices2(int f, int h, int i, int j) {
-		if (f == 0) {
-			if (h == 0) {
-				if (i == 1) {
-					if (j == 1) { return 1; 
-					} else { return 1; }
-				} else  {
-					if (j == 1) { return 1; 
-					} else { return 1; }
-				}
-			} else { if (h == 1){
-				if (i == 1) {
-					if (j == 0) { return 1; 
-					} else { return 2; }
-				} else  {
-					if (j == 0) { return 1; 
-					} else { return 2; }
-				}
-			} else {
-				if (i == 1) {
-					if (j == 0) { return 2; 
-					} else { return 2; }
-				} else  {
-					if (j == 0) { return 2; 
-					} else { return 2; }
-				}
-			} }
-		} else {
-			if (h == 0) {
-				if (j == 1) { return 3; 
-				} else { return 3; }
-			} else { if (h == 1){
-				if (j == 0) { return 3; 
-				} else { return 4; }
-			} else {
-				if (j == 0) { return 4; 
-				} else { return 4; }
-			} }
-		}
+		return ret;
 	}
 	
 	// Getter
