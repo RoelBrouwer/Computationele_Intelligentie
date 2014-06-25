@@ -255,13 +255,61 @@ Sudoku(Input)
 \subsubsection{Consistency check}
 Het is belangrijk om na elke stap in het zoeken naar de oplossing na te gaan of met het nemen van deze stap geen constraints geschonden worden.
 
-...
+Gegeven dat een bepaald vakje gewijzigd is, wordt met behulp van onderstaande methode gecontroleerd of er geen constraints geschonden worden:
 
-ToDo - als implementatie constraintscheck compleet is
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+Consistent(X, Y)
+	// X en Y zijn de "coördinaten" van het betreffende vakje in de array.
+	for i = 0 tot Constraints[X][Y].length
+		// Als een van de constraints geschonden wordt, moet de methode false teruggeven.
+		if (Constraints[X][Y][i].ConstraintGeschonden())
+			return false;
+	return true;
+\end{lstlisting}
+\end{minipage}
 
 \subsection{Backtracking}
+Gegeven de hierboven beschreven representatie van CSP is het relatief eenvoudig om backtracking te implementeren. Dit gebeurt recursief, waarbij steeds vakjes worden ingevuld, tot het mis gaat. Op dat moment wordt de laatste keuze herzien, totdat alle opties "op" zijn, of er een oplossing gevonden is. De onderstaande pseudocode laat zien hoe wij dit ge\"{i}mplementeerd hebben. 
+
+Er wordt aan enkele hulpmethoden gerefereerd, waarvan geen pseudocode beschikbaar is in dit verslag. Dit zijn vrij eenvoudige methoden, waarvan de implementatie voor zich spreekt. Voor de precieze implementatie verwijzen we naar de code.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+Backtracking(Sudoku)
+	NieuweSudoku = BacktrackingRecursief(Sudoku);
+	if (NieuweSudoku != null)
+		Print(NieuweSudoku);
+	else
+		Print("Geen oplossing.");
+
+BacktrackingRecursief(Sudoku)
+	// Als de sudoku volledig ingevuld is, zijn we klaar in de recursie
+	if(Sudoku.volledigIngevuld())
+		return Sudoku;
+	
+	// We pakken het eerste vakje (variabele) dat nog niet is ingevuld.	
+	Vakje = VindVolgende(Sudoku);
+	
+	for i = 0 tot Vakje.domein.length
+		// Als i in het domein zit, gaan we eens proberen om Vakje in te vullen met i + 1. We zetten de waarde op i + 1 (en verkleinen ook het domein zodat het alleen nog i + 1 bevat).
+		if (Vakje.ElementInDomein(i + 1)) {
+			OudDomein = Vakje.domein;
+			Vakje.waarde = i + 1;
+			// Als er geen constraints geschonden worden, gaan we een niveau dieper de recursie in.
+			if (Sudoku.Consistent(Vakje.X, Vakje.Y))
+				NieuweSudoku = BacktrackingRecursief(Sudoku);
+				if (NieuweSudoku != null) return NieuweSudoku;
+			// Als we hier terecht komen is het blijkbaar mislukt en kan i + 1 niet in Vakje worden ingevuld. We maken het vakje dus weer leeg en zetten het domein netjes terug. 
+			Vakje.waarde = 0;
+			Vakje.domein = OudDomein;
+	// Er kan niets voor dit vakje worden ingevuld, dus de puzzel is onoplosbaar:
+	return null;
+\end{lstlisting}
+\end{minipage}
 
 \subsection{Forward Checking}
+TODO
 
 \chapter{Experimentele resultaten}
 \section{Hill-climbing}
