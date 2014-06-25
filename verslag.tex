@@ -40,7 +40,7 @@
 \section{Hill-climbing}
 \subsection{Algemeen}
 \subsubsection{Representatie en bepalen begintoestand}
-Sudoku's zijn gerepresenteerd als een dubbel array ($n \times n$)  van cijfers (1 t/m $n$). Probleemtoestanden zijn volledig ingevulde sudoku's, wat betekent dat er nog iets met de input moet gebeuren om een begintoestand te verkrijgen.
+Sudoku's zijn gerepresenteerd als een dubbel array ($n^2 \times n^2$)  van cijfers (1 t/m $n^2$). In dit hele verslag wordt met $n$ de wortel van de breedte (of hoogte) van de puzzel bedoeld. Voor een puzzel van 9 bij 9 geldt dus, bijvoorbeeld $n = 3$. We beschouwen dus alleen vierkante sudoku's. Probleemtoestanden zijn volledig ingevulde sudoku's, wat betekent dat er nog iets met de input moet gebeuren om een begintoestand te verkrijgen.
 
 De lege vakjes in de sudoku worden gevuld door een willekeurig getal dat nog niet in het $n \times n$ blok voorkomt. Welk getal in het vakje terecht komt wordt bepaald door de volgende functie:
 
@@ -54,12 +54,12 @@ ZoekVulling(AlGevuld)
 	TeVullen = (int)(randomFloat(0, 1) * AantalOngevuld);
 	count = 0;
 	// Tot is exclusief.
-	for i = 0 tot n
+	for i = 0 tot n * n
 		if (!AlGevuld[i])
 			if(count == TeVullen)
 				return i + 1;
 			else 
-				j++;
+				count++;
 \end{lstlisting}
 \end{minipage}
 
@@ -205,7 +205,56 @@ IteratedLocalSearch (HuidigeSudoku)
 \end{minipage}
 
 \section{Constraint Satisfaction}
+\subsection{Algemeen}
+\subsubsection{Representatie}
+Een \textit{Constraint Satisfaction Problem} (CSP) bestaat uit drie componenten: de variabelen ($X$), de domeinen ($D$) en de constraints ($C$). Hieronder beschrijven we hoe we elk van deze componenten hebben gerepresenteerd in onze code.
+\begin{itemize}
+\item \textbf{Variabelen ($X$)}. De variabelen zijn vakjes in de sudoku. Deze vakjes zijn gerepresenteerd als objecten met een waarde en een domein en methoden om informatie over deze twee zaken op te vragen of ze te manipuleren. "Vaste vakjes" zijn gerepresenteerd door vanaf het begin maar één element in het domein te stoppen.
+\item \textbf{Domeinen ($D$)}. De domeinen zitten ingebakken in de objecten die hierboven beschreven zijn, aangezien de relatie variabele-domein in principe 1 op 1 is.
+\item \textbf{Constraints ($C$)}. Constraints zijn ook gerepresenteerd als objecten. We hebben ervoor gekozen om alleen binaire constraints te implementeren, aangezien alle hogere constraints tot binaire constraints te herleiden zijn. Een constraint is een object dat twee vakjes "bij zich heeft" en methoden bevat om te kijken welke vakjes dat zijn en of het constraint geschonden is. Aangezien in dit probleem alleen constraints van de vorm $ X \not= Y $ voorkomen is in die laatste methode ingebakken dat getest wordt of de waarde van het ene vakje ongelijk is aan de waarde van het andere vakje.
+\end{itemize}
+Het probleem (de sudoku) is gerepresenteerd als een lijst van variabelen en een lijst van constraints.
+
+Elke variabele heeft dan $2(n^2 - 1) + (n - 1)^2$ constraints. Er zitten $n^2 - 1$ andere vakjes in dezelfde rij, en evenveel in dezelfde kolom. Er zitten daarbij nog $n^2$ vakjes in hetzelfde blok, daarvan moeten we  het vakje zelf (1) en de vakjes die al in de rij/kolom zitten (2(n - 1)) nog afhalen. Dan komen we uit op $(n^2 - (1 + 2(n - 1))) = (n - 1)^2$ extra vakjes.
+
+Hieronder laten we zien hoe het probleem gerepresenteerd wordt, door een (deel van de) constructor van het object dat het probleem representeert te tonen.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+Sudoku(Input)
+	// Input is de originele input waaruit de begintoestand gehaald is.
+	X = Variabelen[n * n][n * n];
+	// l en k voor de blokken, i en j identificerren de vakjes in de blokken.
+	for l = 0 tot n
+		for k = 0 tot n
+			for i = 0 tot n
+				for j = 0 tot n
+					waarde = Input[l * n + i][k * n + j];
+					// Als het een leeg vakje is, maken we een variabelen aan met een volledig domein.
+					if (waarde == 0)
+						X[l * n + i][k * n + j] = Variabelen(0, VolDomein);
+					// Anders is het een gevuld vakje, en bevat het domein maar een element.
+					else
+						X[l * n + i][k * n + j] = Variabelen(waarde, EnkelDomein);
+						
+	Constraints = Constraint[n * n][n * n][2 * (n * n - 1) + ((n - 1) * (n - 1))];
+	// Er worden constraints aangemaakt voor alle mogelijke combinaties van twee vakjes die in 
+	// dezelfde rij, kolom, of hetzelfde blok zitten. Deze worden bij de juiste vakjes in het 
+	// array gestopt, zodat aan het eind van het verhaal elk blokje een lijst heeft van de 
+	// constraints die voor hem gelden. De precieze uitwerking daarvan is voor dit verslag 
+	// niet relevant en kan in de code worden teruggevonden.
+\end{lstlisting}
+\end{minipage}
+
+\subsubsection{Consistency check}
+Het is belangrijk om na elke stap in het zoeken naar de oplossing na te gaan of met het nemen van deze stap geen constraints geschonden worden.
+
+...
+
+ToDo - als implementatie constraintscheck compleet is
+
 \subsection{Backtracking}
+
 \subsection{Forward Checking}
 
 \chapter{Experimentele resultaten}
