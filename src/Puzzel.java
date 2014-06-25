@@ -234,6 +234,7 @@ public class Puzzel {
 	}
 	
 	private static void backtracking(Sudoku sudoku) {
+				
 		Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
 		
 		if(nieuwesudoku != null) {
@@ -242,25 +243,21 @@ public class Puzzel {
 		} else System.out.println("Geen oplossing.");
 		
 		
+		
+		
 	}
 	
 	private static Sudoku backtrackingRecursief(Sudoku sudoku)  {
 		if(sudoku.volledigIngevuld()) {
-			System.out.println("hoi");
 			return sudoku;
 		}
 		
-		System.out.println("heej");
+		
 		IVakje vakje = vindVolgende(sudoku);
-		System.out.println(vakje.getX() + " " + vakje.getY());
-		for(int j = 0; j < vakje.getDomein().length; j++) System.out.print(vakje.getDomein()[j]);
-		System.out.println();
+		
 		
 		for(int i = 0; i < vakje.getDomein().length; i++) {
-			System.out.print(i + " ");
 			
-			for(int j = 0; j < vakje.getDomein().length; j++) System.out.print(vakje.getDomein()[j]);
-			System.out.println();
 			
 			if(vakje.elementInDomein(i+1)) {
 				boolean[] bewaar = new boolean[vakje.getDomein().length];
@@ -272,24 +269,23 @@ public class Puzzel {
 				vakje.setWaarde(i+1);
 				//vakje.domeinelementToevoegen(i+1);
 				//sudoku.getGetallen()[i][j].setWaarde(x);
-				System.out.println("hai");
+				
 				
 				if(sudoku.consistent()) {
 					//inferences(sudoku);
 					//if(inferences != null) inferencesNaarAssignment()
 					
-					System.out.println("ola!");
+					
 					Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
 					if(nieuwesudoku != null) return nieuwesudoku;
 				}
 				vakje.setWaarde(0);
 				vakje.setDomein(bewaar);
 				//vakje.domeinelementVerwijderen(i+1);
-				//voegWaardeWeerToeAanDomein();
+				
 			}
 		}
-		 System.out.println("hi");
-		 System.out.println();
+		 
 		return null;
 				
 	}

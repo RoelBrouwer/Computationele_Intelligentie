@@ -133,9 +133,9 @@ public class Sudoku {
 				// Voeg een constraint toe voor de vakjes waar het vakje nog geen constraint mee heeft.
 				for (int k = j + 1; k < n * n; k++)
 				{
-					Constraint add = new Constraint(getallen[i][j], getallen[i][k]);
-					constraints[i][j][n * n - 1 + k - 1] = add;
-					constraints[i][k][n * n - 1 + j] = add;
+					Constraint add = new Constraint(getallen[j][i], getallen[k][i]);
+					constraints[j][i][n * n - 1 + k - 1] = add;
+					constraints[k][i][n * n - 1 + j] = add;
 				}
 			}
 		}
@@ -241,7 +241,7 @@ public class Sudoku {
 	}
 	
 	// om te kijken of ieder vakje van de sudoku is ingevuld
-	public boolean volledigIngevuld() throws Exception {
+	public boolean volledigIngevuld() {
 		for(int i = 0; i < getallen.length; i++) {
 			for(int j = 0; j < getallen[0].length; j++) {
 				if(getallen[i][j].getWaarde() == 0) return false;
@@ -250,51 +250,12 @@ public class Sudoku {
 		return true;
 	}
 	
-	// kijkt of er niet twee dezelfde cijfers in een rij, kolom of blok staan
-	public boolean consistent() throws Exception {
-		//eerst de rijen
-		boolean[] ingevuld = new boolean[getallen.length];
-		
-		for(int i = 0; i < getallen.length; i++) {
-			for(int k = 0; k < ingevuld.length; k++) ingevuld[k] = false;
-
-			for(int j = 0; j < getallen[0].length; j++) {
-				if(getallen[i][j].getWaarde() != 0) {
-					if(ingevuld[getallen[i][j].getWaarde()-1]) return false;
-					else ingevuld[getallen[i][j].getWaarde()-1] = true;
-				}
-			}
-		}
-		
-		//dan de kolommen
-		for(int i = 0; i < getallen.length; i++) {
-			for(int k = 0; k < ingevuld.length; k++) ingevuld[k] = false;
-
-			for(int j = 0; j < getallen[0].length; j++) {
-				if(getallen[j][i].getWaarde() != 0) {
-					if(ingevuld[getallen[j][i].getWaarde()-1]) return false;
-					else ingevuld[getallen[j][i].getWaarde()-1] = true;
-				}
-			}
-		}
-		
-		int n = (int)Math.sqrt(getallen.length);
-		// dan de blokken
-		for (int g = 0; g <= n * (n - 1); g += n) 
-		{
-			for (int h = 0; h <= n * (n - 1); h += n) 
-			{
-				for(int m = 0; m < ingevuld.length; m++) ingevuld[m] = false;
-				
-				for (int i = 0; i < n; i++) 
-				{
-					for (int j = 0; j < n; j++) 
-					{
-						if(getallen[g+i][h+j].getWaarde() != 0) 
-						{
-							if(ingevuld[getallen[g+i][h+j].getWaarde()-1]) return false;
-							else ingevuld[getallen[g+i][h+j].getWaarde()-1] = true;
-						}
+	public boolean consistent() {
+		for(int i = 0; i < constraints.length;i++) {
+			for(int j = 0; j < constraints[i].length; j++) {
+				for(int k = 0; k < constraints[i][j].length; k++) {
+					if(constraints[i][j][k].constraintGeschonden()) {
+						return false;
 					}
 				}
 			}

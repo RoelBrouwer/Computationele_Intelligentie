@@ -21,4 +21,8 @@ public class Constraint {
 		}
 		return false;
 	}
+	
+	public String toString() {
+		return "" + v1.getX() + "" + v1.getY() + " " + v2.getX() + "" + v2.getY();
+	}
 }

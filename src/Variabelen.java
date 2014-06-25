@@ -6,7 +6,13 @@ public class Variabelen implements IVakje {
 	
 	public Variabelen(int n, boolean[] domein, int x, int y) {
 		this.n = n;
-		this.domein = domein;
+		
+		this.domein = new boolean[domein.length];
+		for(int i = 0; i < domein.length; i++) {
+			if(domein[i]) this.domein[i] = true;
+			else this.domein[i] = false;
+		}
+		
 		this.x = x;
 		this.y = y;
 	}
