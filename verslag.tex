@@ -11,6 +11,12 @@
 \usepackage{listings}
 \usepackage{color}
 
+\usepackage[title,titletoc,toc]{appendix}
+
+\usepackage{fancyhdr}
+
+\renewcommand{\chaptername}{Hoofdstuk}
+
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
@@ -272,5 +278,330 @@ ToDo - als implementatie constraintscheck compleet is
 \section{Constraint Satisfaction}
 \subsection{Backtracking}
 \subsection{Forward Checking}
+
+\begin{appendices}
+{\Huge \textbf{Appendices - introductie}}\newline
+
+Voor het testen van de verschillende algoritmen hebben we vijf puzzels van elke soort ($n = 3, 4, 5$) gebruikt. Eén hiervan is afkomstig van de website van het vak, de andere vier komen van \textit{menneske.no}. De puzzels zijn te vinden in de txt-bestanden met de namen test\_n$x$\_$nr$\_$bron$.txt, waarbij $x \in \{3,4,5\}, nr \in \{1,2,3,4,5\}$ en $bron \in \{ci,menneske\}$.
+
+De testresultaten zijn uitgesplitst naar het soort puzzel (de $n$-waarde) en de specifieke puzzel waarop getest is. In de paragraaf bij de puzzel wordt vervolgens precies aangegeven wat getest is.
+
+\chapter{Testresultaten Random Restart Hill-climbing}
+\section{9 * 9 puzzels (n = 3)}
+Voor elke puzzel in deze sectie zijn 15 testruns uitgevoerd. Van deze runs wordt het volgende weergeven:
+\begin{itemize}
+\item Lokale maxima. Het algoritme bereikt eerst een aantal lokale maxima voor het globale maximum bereikt wordt. Van de eerste 15 lokale maxima die bereikt zijn wordt hier weergeven:
+\begin{itemize}
+\item Het gemiddeld aantal stappen dat het kostte om vanaf de begintoestand naar het lokale maximum te komen;
+\item De gemiddelde waarde van de evaluatiefunctie voor deze lokale maxima (m.a.w. hoeveel cijfers staan er gemiddeld nog verkeerd?).
+\end{itemize}
+\item Globaal maximum. Uiteindelijke bereikt het algoritme meestal een globaal maximum (als dat niet binnen 15 minuten gebeurd is, bevatten de kolommen over het globale maximum geen informatie). Van het globale maximum wordt weergeven:
+\begin{itemize}
+\item Het aantal stappen dat gezet is voor het globale maximum bereikt was;
+\item De tijd (in milliseconden) die het kostte het globale maximum te bereiken;
+\item Hoeveel lokale maxima langsgekomen zijn voordat het globale maximum gevonden was (= hoeveel keer een random restart heeft plaatsgevonden);
+\item Hoeveel stappen er vanaf de laatste herstart gezet zijn om het globale maximum te bereiken.
+\end{itemize}
+\end{itemize}
+\subsection{Puzzel 1 (test\_n3\_1\_ci)}
+\begin{tabular}{|c||c|c||c|c|c|c|}
+\hline  & \multicolumn{2}{|c||}{Lokale maxima} & \multicolumn{4}{|c|}{Globaal maximum}  \\ 
+\hline Testnr. & stappen & evaluatie & stappen & tijd (ms) & lokale optima & laatste klim \\ 
+\hline \hline 1 & 24 & 12 & 83801 & 12661 & 3243 & 31 \\ 
+\hline 2 & 24 & 9,9 & 28602 & 4376 & 1114 & 31 \\ 
+\hline 3 & 25 & 8,9 & 79208 & 11866 & 3085 & 44 \\ 
+\hline 4 & 24 & 9,3 & 88237 & 13550 & 3447 & 31 \\ 
+\hline 5 & 25 & 10,9 & 236198 & 35407 & 9245 & 33 \\ 
+\hline	6	&	26	&	8,8	&	203321	&	30898	&	7909	&	31	\\
+\hline	7	&	26	&	10,2	&	74913	&	11450	&	2920	&	32	\\
+\hline	8	&	26	&	11,1	&	25339	&	3873	&	975	&	26	\\
+\hline	9	&	24	&	9,7	&	168835	&	25533	&	6597	&	29	\\
+\hline	10	&	24	&	11,2	&	24687	&	3768	&	954	&	21	\\
+\hline	11	&	26	&	10,3	&	63134	&	9521	&	2456	&	26	\\
+\hline	12	&	26	&	9,5	&	218689	&	32873	&	8529	&	28	\\
+\hline	13	&	26	&	9,8	&	87454	&	13186	&	3405	&	30	\\
+\hline	14	&	25	&	10,2	&	126969	&	18006	&	4947	&	25	\\
+\hline	15	&	25	&	10,2	&	51102	&	7718	&	1977	&	37	\\
+\hline \hline Gemiddeld: & 25,1 & 10,1 & 104032,6 & 15645,7 & 4053,5 & 30,3 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 2 (test\_n3\_2\_menneske)}
+\begin{tabular}{|c||c|c||c|c|c|c|}
+\hline  & \multicolumn{2}{|c||}{Lokale maxima} & \multicolumn{4}{|c|}{Globaal maximum}  \\ 
+\hline Testnr. & stappen & evaluatie & stappen & tijd (ms) & lokale optima & laatste klim \\ 
+\hline \hline	1	&	8	&	15	&	\multicolumn{4}{|c|}{\textit{Werd niet binnen 15 minuten gevonden}}\\
+\hline	2	&	8	&	16	&		&		&		& \\
+\hline	3	&	7	&	15	&		&		&		& \\
+\hline	4	&	10	&	15	&		&		&		& \\
+\hline	5	&	7	&	16	&		&		&		& \\
+\hline	6	&	8	&	15	&		&		&		& \\
+\hline	7	&	6	&	17	&		&		&		& \\
+\hline	8	&	7	&	16	&		&		&		& \\
+\hline	9	&	8	&	15	&		&		&		& \\
+\hline	10	&	7	&	18	&		&		&		& \\
+\hline	11	&	8	&	15	&		&		&		& \\
+\hline	12	&	7	&	17	&		&		&		& \\
+\hline	13	&	8	&	15	&		&		&		& \\
+\hline	14	&	8	&	16	&		&		&		& \\
+\hline	15	&	8	&	15	&		&		&		& \\
+
+\hline \hline Gemiddeld: & 7,7 & 15,7 &  &  &  &  \\ 
+\hline 
+\end{tabular}
+\subsection{Puzzel 3 (test\_n3\_3\_menneske)}
+\begin{tabular}{|c||c|c||c|c|c|c|}
+\hline  & \multicolumn{2}{|c||}{Lokale maxima} & \multicolumn{4}{|c|}{Globaal maximum}  \\ 
+\hline Testnr. & stappen & evaluatie & stappen & tijd (ms) & lokale optima & laatste klim \\ 
+\hline \hline	1	&	7	&	17	&	\multicolumn{4}{|c|}{\textit{Werd niet binnen 15 minuten gevonden}}	\\
+\hline	2	&	7	&	17	&		&		&		&	\\
+\hline	3	&	7	&	17	&		&		&		&	\\
+\hline	4	&	7	&	18	&		&		&		&	\\
+\hline	5	&	8	&	16	&		&		&		&	\\
+\hline	6	&	7	&	16	&		&		&		&	\\
+\hline	7	&	7	&	16	&		&		&		&	\\
+\hline	8	&	7	&	16	&		&		&		&	\\
+\hline	9	&	9	&	17	&		&		&		&	\\
+\hline	10	&	8	&	17	&		&		&		&	\\
+\hline	11	&	7	&	17	&		&		&		&	\\
+\hline	12	&	8	&	17	&		&		&		&	\\
+\hline	13	&	7	&	18	&		&		&		&	\\
+\hline	14	&	7	&	17	&		&		&		&	\\
+\hline	15	&	7	&	17	&		&		&		&	\\
+
+\hline \hline Gemiddeld: & 7,3 & 16,9 &  &  &  &  \\ 
+\hline 
+\end{tabular}
+\subsection{Puzzel 4 (test\_n3\_4\_menneske)}
+\begin{tabular}{|c||c|c||c|c|c|c|}
+\hline  & \multicolumn{2}{|c||}{Lokale maxima} & \multicolumn{4}{|c|}{Globaal maximum}  \\ 
+\hline Testnr. & stappen & evaluatie & stappen & tijd (ms) & lokale optima & laatste klim \\ 
+\hline \hline	1	&	7	&	16	&	\multicolumn{4}{|c|}{\textit{Werd niet binnen 15 minuten gevonden}}	\\
+\hline	2	&	7	&	14	&		&		&		&	\\
+\hline	3	&	7	&	15	&		&		&		&	\\
+\hline	4	&	6	&	16	&		&		&		&	\\
+\hline	5	&	8	&	15	&		&		&		&	\\
+\hline	6	&	7	&	15	&		&		&		&	\\
+\hline	7	&	7	&	14	&		&		&		&	\\
+\hline	8	&	7	&	16	&		&		&		&	\\
+\hline	9	&	7	&	16	&		&		&		&	\\
+\hline	10	&	8	&	15	&		&		&		&	\\
+\hline	11	&	7	&	15	&		&		&		&	\\
+\hline	12	&	7	&	15	&		&		&		&	\\
+\hline	13	&	6	&	16	&		&		&		&	\\
+\hline	14	&	7	&	15	&		&		&		&	\\
+\hline	15	&	7	&	16	&		&		&		&	\\
+\hline \hline Gemiddeld: & 7 & 15,3 &  &  &  &  \\ 
+\hline 
+\end{tabular}
+\subsection{Puzzel 5 (test\_n3\_5\_menneske)}
+\begin{tabular}{|c||c|c||c|c|c|c|}
+\hline  & \multicolumn{2}{|c||}{Lokale maxima} & \multicolumn{4}{|c|}{Globaal maximum}  \\ 
+\hline Testnr. & stappen & evaluatie & stappen & tijd (ms) & lokale optima & laatste klim \\ 
+\hline \hline	1	&	6	&	16	&	2017	&	280	&	86	&	32	\\
+\hline	2	&	7	&	15	&	10128	&	1235	&	433	&	32	\\
+\hline	3	&	6	&	14	&	13049	&	1566	&	555	&	34	\\
+\hline	4	&	7	&	16	&	60000	&	6989	&	2566	&	32	\\
+\hline	5	&	7	&	15	&	11866	&	1406	&	509	&	35	\\
+\hline	6	&	6	&	16	&	60588	&	7048	&	2602	&	25	\\
+\hline	7	&	6	&	14	&	9328	&	1146	&	391	&	27	\\
+\hline	8	&	7	&	15	&	5366	&	673	&	226	&	28	\\
+\hline	9	&	6	&	18	&	9808	&	1184	&	412	&	28	\\
+\hline	10	&	6	&	16	&	49993	&	5839	&	2146	&	34	\\
+\hline	11	&	5	&	16	&	15863	&	1933	&	6683	&	27	\\
+\hline	12	&	5	&	16	&	60006	&	6895	&	2564	&	30	\\
+\hline	13	&	6	&	17	&	64164	&	7435	&	2753	&	29	\\
+\hline	14	&	6	&	15	&	33467	&	3862	&	1421	&	32	\\
+\hline	15	&	6	&	14	&	83975	&	9668	&	3592	&	37	\\
+\hline \hline Gemiddeld: & 6,1 & 15,5 & 32641,2 & 3810,6 & 1795,9 & 30,8 \\ 
+\hline 
+\end{tabular}
+\section{16 * 16 puzzels (n = 4)}
+Voor elke puzzel in deze sectie zijn 5 testruns uitgevoerd. Bij geen enkele van de puzzels werd binnen 15 minuten een oplossing bereikt. Er wordt dus alleen maar data weergegeven van de eerste 10 gevonden lokale maxima:
+\begin{itemize}
+\item Het gemiddeld aantal stappen dat het kostte om vanaf de begintoestand naar het lokale maximum te komen;
+\item De gemiddelde waarde van de evaluatiefunctie voor deze lokale maxima (m.a.w. hoeveel cijfers staan er gemiddeld nog verkeerd?).
+\end{itemize}
+\subsection{Puzzel 1 (test\_n4\_1\_ci)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 31 & 101 \\ 
+\hline 2 & 30 & 100 \\ 
+\hline 3 & 32 & 99 \\ 
+\hline 4 & 28 & 102 \\ 
+\hline 5 & 29 & 101 \\ 
+\hline \hline Gemiddeld: & 30 & 100,6 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 2 (test\_n4\_2\_menneske)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 35 & 83 \\ 
+\hline 2 & 35 & 87 \\ 
+\hline 3 & 35 & 89 \\ 
+\hline 4 & 36 & 85 \\ 
+\hline 5 & 38 & 86 \\ 
+\hline \hline Gemiddeld: & 35,8 & 86 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 3 (test\_n4\_3\_menneske)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 36 & 89 \\ 
+\hline 2 & 39 & 81 \\ 
+\hline 3 & 38 & 84 \\ 
+\hline 4 & 33 & 87 \\ 
+\hline 5 & 35 & 89 \\ 
+\hline \hline Gemiddeld: & 36,2 & 86 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 4 (test\_n4\_4\_menneske)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 36 & 95 \\ 
+\hline 2 & 35 & 91 \\ 
+\hline 3 & 36 & 89 \\ 
+\hline 4 & 39 & 91 \\ 
+\hline 5 & 36 & 89 \\ 
+\hline \hline Gemiddeld: & 36,4 & 91 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 5 (test\_n4\_5\_menneske)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 29 & 91 \\ 
+\hline 2 & 32 & 88 \\ 
+\hline 3 & 32 & 87 \\ 
+\hline 4 & 29 & 89 \\ 
+\hline 5 & 33 & 87 \\ 
+\hline \hline Gemiddeld: & 31 & 88,4 \\ 
+\hline 
+\end{tabular} 
+
+\section{25 * 25 puzzels (n = 5)}
+Voor de eerste twee puzzels in deze sectie zijn 5 testruns uitgevoerd, voor de laatste drie zijn dat er 3. Bij geen enkele van de puzzels werd binnen 15 minuten een oplossing bereikt. Er wordt dus alleen maar data weergegeven van de eerste 10 gevonden lokale maxima:
+\begin{itemize}
+\item Het gemiddeld aantal stappen dat het kostte om vanaf de begintoestand naar het lokale maximum te komen;
+\item De gemiddelde waarde van de evaluatiefunctie voor deze lokale maxima (m.a.w. hoeveel cijfers staan er gemiddeld nog verkeerd?).
+\end{itemize}
+\subsection{Puzzel 1 (test\_n5\_1\_ci)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 72 & 269 \\ 
+\hline 2 & 67 & 260 \\ 
+\hline 3 & 70 & 270 \\ 
+\hline 4 & 72 & 265 \\ 
+\hline 5 & 69 & 268 \\ 
+\hline \hline Gemiddeld: & 70 & 266,4 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 2 (test\_n5\_2\_menneske)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 82 & 210 \\ 
+\hline 2 & 90 & 202 \\ 
+\hline 3 & 83 & 212 \\ 
+\hline 4 & 82 & 205 \\ 
+\hline 5 & 87 & 199 \\ 
+\hline \hline Gemiddeld: & 84,8 & 205,6 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 3 (test\_n5\_3\_menneske)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 87 & 219 \\ 
+\hline 2 & 90 & 220 \\ 
+\hline 3 & 83 & 227 \\ 
+\hline \hline Gemiddeld: & 86,7 & 222 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 4 (test\_n5\_4\_menneske)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 85 & 215 \\ 
+\hline 2 & 81 & 219 \\ 
+\hline 3 & 85 & 220 \\ 
+\hline \hline Gemiddeld: & 83,7 & 218 \\ 
+\hline 
+\end{tabular} 
+\subsection{Puzzel 5 (test\_n5\_5\_menneske)}
+\begin{tabular}{|c||c|c|}
+\hline Testnr. & stappen & evaluatie \\ 
+\hline \hline 1 & 83 & 226 \\ 
+\hline 2 & 87 & 225 \\ 
+\hline 3 & 84 & 220 \\ 
+\hline \hline Gemiddeld: & 84,7 & 223,7 \\ 
+\hline 
+\end{tabular} 
+
+\chapter{Testresultaten Iterated Local Search}
+\section{9 * 9 puzzels (n = 3)}
+\subsection{Puzzel 1 (test\_n3\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n3\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n3\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n3\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n3\_5\_menneske)}
+\section{16 * 16 puzzels (n = 4)}
+\subsection{Puzzel 1 (test\_n4\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n4\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n4\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n4\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n4\_5\_menneske)}
+\section{25 * 25 puzzels (n = 5)}
+\subsection{Puzzel 1 (test\_n5\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n5\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n5\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n5\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n5\_5\_menneske)}
+
+\chapter{Testresultaten Constraint Satisfaction - backtracking}
+\section{9 * 9 puzzels (n = 3)}
+\subsection{Puzzel 1 (test\_n3\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n3\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n3\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n3\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n3\_5\_menneske)}
+\section{16 * 16 puzzels (n = 4)}
+\subsection{Puzzel 1 (test\_n4\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n4\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n4\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n4\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n4\_5\_menneske)}
+\section{25 * 25 puzzels (n = 5)}
+\subsection{Puzzel 1 (test\_n5\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n5\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n5\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n5\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n5\_5\_menneske)}
+
+\chapter{Testresultaten Constraint Satisfaction - forward checking}
+\section{9 * 9 puzzels (n = 3)}
+\subsection{Puzzel 1 (test\_n3\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n3\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n3\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n3\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n3\_5\_menneske)}
+\section{16 * 16 puzzels (n = 4)}
+\subsection{Puzzel 1 (test\_n4\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n4\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n4\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n4\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n4\_5\_menneske)}
+\section{25 * 25 puzzels (n = 5)}
+\subsection{Puzzel 1 (test\_n5\_1\_ci)}
+
+\subsection{Puzzel 2 (test\_n5\_2\_menneske)}
+\subsection{Puzzel 3 (test\_n5\_3\_menneske)}
+\subsection{Puzzel 4 (test\_n5\_4\_menneske)}
+\subsection{Puzzel 5 (test\_n5\_5\_menneske)}
+
+\end{appendices}
 
 \end{document}          
