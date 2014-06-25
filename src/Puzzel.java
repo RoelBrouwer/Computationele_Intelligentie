@@ -271,7 +271,7 @@ public class Puzzel {
 				//sudoku.getGetallen()[i][j].setWaarde(x);
 				
 				
-				if(sudoku.consistent()) {
+				if(sudoku.consistent(vakje.getX(), vakje.getY())) {
 					//inferences(sudoku);
 					//if(inferences != null) inferencesNaarAssignment()
 					

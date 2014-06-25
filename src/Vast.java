@@ -28,4 +28,6 @@ public class Vast implements IVakje {
 	public boolean[] getDomein() {return null;}
 	public void setDomein(boolean[] domein){}
 	public boolean gevuld() {return false;}
+	public int getX() {return -1;}
+	public int getY() {return -1;}
 }

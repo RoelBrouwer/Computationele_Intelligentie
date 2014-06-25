@@ -250,8 +250,15 @@ public class Sudoku {
 		return true;
 	}
 	
-	public boolean consistent() {
-		for(int i = 0; i < constraints.length;i++) {
+	public boolean consistent(int x, int y) {
+		for (int i = 0; i < constraints[x][y].length; i++)
+		{
+			if(constraints[x][y][i].constraintGeschonden())
+			{
+				return false;
+			}
+		}
+		/*for(int i = 0; i < constraints.length;i++) {
 			for(int j = 0; j < constraints[i].length; j++) {
 				for(int k = 0; k < constraints[i][j].length; k++) {
 					if(constraints[i][j][k].constraintGeschonden()) {
@@ -259,7 +266,7 @@ public class Sudoku {
 					}
 				}
 			}
-		}
+		}*/
 		return true;
 	}
 	

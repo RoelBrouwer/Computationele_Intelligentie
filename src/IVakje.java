@@ -13,5 +13,7 @@ public interface IVakje {
 	public boolean[] getDomein();
 	public void setDomein(boolean[] domein);
 	public boolean gevuld();
+	public int getX();
+	public int getY();
 
 }
