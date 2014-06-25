@@ -29,7 +29,7 @@
   showstringspaces=false,
   columns=flexible,
   basicstyle={\small\ttfamily},
-  numbers=none,
+  numbers=left,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{blue},
   commentstyle=\color{dkgreen},
@@ -315,17 +315,34 @@ TODO
 \section{Hill-climbing}
 \subsection{Algemene observaties}
 \subsubsection{Effici\"{e}ntie}
-(Rekentijd en aantal toestanden tot lokaal optimum)
+De tijd die het algoritme nodig heeft om een lokaal maximum te bereiken laat zich opvallend goed middellen. De gemiddelden van het aantal stappen dat nodig is van 10-15 lokale maxima liggen heel dicht bij elkaar - zolang het om dezelfde puzzel gaat. Tussen de puzzels is meer variatie te zien. Het lijkt erop dat het landschap van bepaalde puzzels rijker bezaaid is met lokale maxima dan dat van andere.
+
+Voor puzzels waar $n=3$ ligt dit aantal in onze tests meestal rond de 7, en komt vrijwel nooit boven de 30. 
+
+Voor puzzels waar $n=4$ ligt het aantal stappen dat nodig is om een lokaal maximum te bereiken meestal tussen de 30 en de 40, en bij $n=5$ tussen de 70 en de 90.
+
+Voor het vinden van een lokaal maximum is verwaarloosbaar veel tijd nodig. Als dat je doel is, krijg je bij het stellen van de vraag direct een antwoord. Wij zijn echter meer geïnteresseerd in globale maxima, oplossingen voor de puzzel. Om die te bereiken is meer nodig dan hill-climbing alleen. Hieronder bespreken we de effici\"{e}ntie van de twee mogelijkheden die wij ge\"{i}mplementeerd hebben.
+
 \subsubsection{Accepteren gelijke toestanden}
+Bij de implementatie van hill-climbing kan ervoor gekozen worden om bij het zoeken naar een opvolger-toestand toestanden die niet strikt een verbetering zijn ten opzichte van de huidige toestand te accepteren als opvolger. Dit kan bereikt worden door de $>$ in regel 20 van de pseudocode voor de ZoekOperator (p. 2) te veranderen in een $\geq$.
+
+In onze implementatie is dat een groot nadeel, omdat daarmee de mogelijkheid wordt geschapen tot het oneindig in cirkeltjes lopen - dat wordt zelfs erg waarschijnlijk. Op het moment dat de eerste swap die een opvolgertoestand oplevert die gelijk/beter is dan de huidige toestand een toestand oplevert die even goed is als de huidige toestand, zal bij de volgende stap de omgekeerde operatie (het terugswappen van de net verwisselde vakjes) de eerste swap zijn die gelijk/beter is dan de toestand. Omdat de mogelijke verwisselingen steeds in dezelfde volgorde worden beschouwd, betekent dit een oneindig heen-en-weer springen tussen twee toestanden, zonder ooit bij een lokaal maximum aan te komen.
+
+Wanneer we dus kiezen voor $>$ in plaats van $\geq$ hebben we meer kans op een (snel) antwoord. Het is dus effici\"{e}nter en veiliger om daarvoor te kiezen.
+
 \subsection{Random Restart}
+Voor een uitgebreid(er) overzicht van de test-resultaten, zie \textit{appendix A}.
 \subsubsection{Effici\"{e}ntie}
 (Rekentijd en aantal toestanden tot globaal optimum)
 \subsection{Iterated Local Search}
+Voor een uitgebreid(er) overzicht van de test-resultaten, zie \textit{appendix B}.
 \subsubsection{Effici\"{e}ntie}
 (Rekentijd en aantal toestanden tot globaal optimum)
 \section{Constraint Satisfaction}
 \subsection{Backtracking}
 \subsection{Forward Checking}
+
+\chapter{Reflectie}
 
 \begin{appendices}
 {\Huge \textbf{Appendices - introductie}}\newline
