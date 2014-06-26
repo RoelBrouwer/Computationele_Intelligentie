@@ -42,6 +42,37 @@
 \begin{document}
 \maketitle
 
+\chapter{Korte gebruikershandleiding}
+Om het programma te gebruiken, volgt u het volgende stappenplan:
+\begin{itemize}
+\item Pak de zip-file uit op een voor u handige locatie, vanaf nu PATH genoemd;
+\item Open de console en navigeer naar PATH\textbackslash src;
+\item Compileer het programma met het volgende commando: \textit{javac Puzzel.java};
+\item Start het programma met \textit{java Puzzel}, met als eerste (en enige) argument de file waarin de sudoku opgeslagen is die u wil oplossen. U vindt 15 verschillende puzzels in PATH, u zou als command line argument bijvoorbeeld \textit{PATH\textbackslash test\_n3\_1\_ci.txt} kunnen meegeven;
+\item Het programma start en vraagt u welke manier van zoeken u wil gebruiken om een oplossing te vinden:
+\begin{itemize}
+\item Typ \textit{r} voor Random Restart Hill-Climbing;
+\item Typ \textit{i} voor Iterated Local Search;
+\item Typ \textit{b} voor Constraint Satisfaction - Backtracking;
+\item Typ \textit{f} voor Constraint Satisfaction - Backtracking met forward checking.
+\end{itemize}
+\item Het programma zal nu een oplossing voor u gaan zoeken en u informatie over deze oplossing geven.
+\end{itemize}
+Een run van het programma zou er zo uit kunnen zien:
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+C:\>		cd PATH\src
+PATH\src>	javac Puzzel.java
+PATH\src>	java Puzzel PATH\test_n3_1_ci.txt
+
+Wil je Iterated Local Search? Voer dan een "i" in.
+Wil je Random Restart Hill-Climbing? Voer dan een "r" in.
+r
+\end{lstlisting}
+\end{minipage}
+
+
 \chapter{Implementatie algoritmen}
 \section{Hill-climbing}
 \subsection{Algemeen}
