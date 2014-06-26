@@ -378,13 +378,42 @@ BacktrackingRecursief (Sudoku)
 \end{minipage}
 
 \subsubsection{Toevoegen van sortering}
-TODO
+Voordat we een gesorteerde lijst van vakjes kunnen gaan gebruiken voor de backtracking, moeten we een methode hebben die een lijst van vakjes kan sorteren.
 
 De methode die dit eenmalige sorteren voor ons doet ziet er, in pseudocode, als volgt uit:
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
 EenmaligSorteren ()
+	// Sla eerst de tweedimensionale array van variabelen plat
+	for i = 0 tot X.length
+		for j = 0 tot X[i].length
+			Gesorteerd[i * X[0].length + j] = X[i][j];
+	// Sorteer de array, met als comparator een functie die de domeingroottes vergelijkt.
+	Arrays.sort(Gesorteerd, Comparator() {
+	        Compare(V1, V2)
+	            return V1.domeinGrootte - V2.domeinGrootte;
+	    });
+\end{lstlisting}
+\end{minipage}
+
+Het is dan een kleine stap om dit in het bestaande backtracking algoritme toe te voegen. Aan de pseudocode op de vorige pagina moet het volgende gebeuren:
+\begin{itemize}
+\item Tussen regel 1 en 2 moet het volgende worden toegevoegd:
+\end{itemize}
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+Sudoku.EenmaligSorteren();
+\end{lstlisting}
+\end{minipage}
+\begin{itemize}
+\item Regel 12 en 13 moeten worden vervangen door:
+\end{itemize}
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+// We pakken het volgende vakje uit de gesorteerde lijst die we met EenmaligSorteren() hebben 
+// aangemaakt.
+Vakje = VindVolgendeGesorteerd(Sudoku);
 \end{lstlisting}
 \end{minipage}
 
