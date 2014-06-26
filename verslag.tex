@@ -315,10 +315,25 @@ Consistent (X, Y)
 \subsubsection{Bepalen initi\"{e}le vrijheidsgraad}
 Om het probleem goed te representeren, moeten de domeinen van de verschillende variabelen aan het begin op de goede manier gedefinieerd zijn. Met andere woorden: de waardes die bij voorbaat nooit ingevuld kunnen worden in die vakjes moeten uit hun domein worden gehaald.
 
-TODO
+Dit lossen we op door voor elk vakje alle constraints een keer door te lopen. Als het andere vakje dat meedoet aan de constraint een ingevuld vakje is, dan moeten we de waarde van dat vakje uit ons domein verwijderen. In pseudocode ziet dat er als volgt uit:
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
+BepalenInitieleVrijheidsgraad()
+	// Voor elk vakje lopen we alle constraints af die voor het vakje gelden. In de dubbele
+	// array X zitten alle variabelen opgeslagen, in Constraints de constraints (per variabele).
+	for i = 0 tot X.length
+		for j = 0 tot X[i].length
+			for c = 0 tot Constraints[i][j].length
+				// We kijken naar het vakje in de constraint dat niet X[i][j] is.
+				if (Constraints[i][j][c].V1 == X[i][j])
+					// Als het andere vakje dat meedoet aan het constraint een ingevuld vakje is,
+					// verwijderen we de waarde van dat vakje uit het domein van X[i][j].
+					if (Constraints[i][j][c].V2.domeinGrootte == 1)
+						X[i][j].DomeinElementVerwijderen(Constraints[i][j][c].V2.waarde);
+				else
+					if (Constraints[i][j][c].V1.domeinGrootte == 1)
+						X[i][j].DomeinElementVerwijderen(Constraints[i][j][c].V1.waarde);
 \end{lstlisting}
 \end{minipage}
 
@@ -340,10 +355,8 @@ BacktrackingRecursief (Sudoku)
 	// Als de sudoku volledig ingevuld is, zijn we klaar in de recursie
 	if(Sudoku.volledigIngevuld())
 		return Sudoku;
-	
 	// We pakken het eerste vakje (variabele) dat nog niet is ingevuld.	
 	Vakje = VindVolgende(Sudoku);
-	
 	for i = 0 tot Vakje.domein.length
 		// Als i in het domein zit, gaan we eens proberen om Vakje in te vullen met i + 1. We 
 		// zetten de waarde op i + 1 (en verkleinen ook het domein zodat het alleen nog i + 1

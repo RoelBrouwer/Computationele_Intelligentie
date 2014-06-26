@@ -12,6 +12,7 @@ public class Puzzel {
 	static int s = 50;
 	static Random randomGen = new Random();
 	static String mode;
+	static boolean sorteren = false;
 	
 	public static void main(String[] args) {
 	
@@ -57,10 +58,10 @@ public class Puzzel {
 		mode = determineMethod();
 		
 		Sudoku sudoku; 
-		if(mode.equals("b")) sudoku = new Sudoku(sud);
+		if(mode.equals("b") || mode.equals("s")) sudoku = new Sudoku(sud);
 		else sudoku = new Sudoku(n, sud);
 		System.out.println(sudoku);
-		if(!mode.equals("b")) System.out.println(sudoku.evalueer());
+		if(!mode.equals("b") && !mode.equals("s")) System.out.println(sudoku.evalueer());
 		
 		switch (mode)
 		{
@@ -71,6 +72,9 @@ public class Puzzel {
 				randomRestart(sudoku, sud);
 				break;
 			case "b":
+				backtracking(sudoku);
+				break;
+			case "s":
 				backtracking(sudoku);
 				break;
 			default:
@@ -242,6 +246,10 @@ public class Puzzel {
 	private static void backtracking(Sudoku sudoku) {
 		
 		sudoku.bepaalInitieleVrijheidsgraad();
+		if (sorteren)
+		{
+			sudoku.eenmaligSorteren();
+		}
 		Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
 		
 		if(nieuwesudoku != null) {
@@ -259,9 +267,15 @@ public class Puzzel {
 			return sudoku;
 		}
 		
-		
-		IVakje vakje = vindVolgende(sudoku);
-		
+		IVakje vakje;
+		if (sorteren)
+		{
+			vakje = vindVolgendeGesorteerd(sudoku);
+		}
+		else
+		{
+			vakje = vindVolgende(sudoku);
+		}
 		
 		for(int i = 0; i < vakje.getDomein().length; i++) {
 			
@@ -303,7 +317,15 @@ public class Puzzel {
 				if(!sudoku.getGrid()[i][j].gevuld()) return sudoku.getGrid()[i][j];
 			}
 		}
-		System.out.println("Hiero!");
+		//System.out.println("Hiero!");
+		return null;
+	}
+	
+	private static IVakje vindVolgendeGesorteerd(Sudoku sudoku) {
+		for (int i = 0; i < sudoku.getSort().length; i++)
+		{
+			if (!sudoku.getSort()[i].gevuld()) return sudoku.getSort()[i];
+		}
 		return null;
 	}
 	

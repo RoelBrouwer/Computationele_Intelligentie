@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Sudoku {
 	
@@ -201,9 +203,13 @@ public class Sudoku {
 		return ret;
 	}
 	
-	// Getter
+	// Getters
 	public IVakje[][] getGrid() {
 		return getallen;
+	}
+	
+	public IVakje[] getSort() {
+		return gesorteerd;
 	}
 	
 	// Kiest een willekeurig oningevuld vakje om te vullen (gebruikt voor de constructor voor hill-climbing)
@@ -295,7 +301,6 @@ public class Sudoku {
 	
 	public void bepaalInitieleVrijheidsgraad()
 	{
-		//TODO
 		// Voor elk vakje lopen we alle constraints af die voor het vakje gelden.
 		for (int i = 0; i < getallen.length; i++)
 		{
@@ -327,6 +332,20 @@ public class Sudoku {
 	
 	public void eenmaligSorteren()
 	{
+		// Sla tweedimensionale array plat
+		for (int i = 0; i < getallen.length; i++)
+		{
+			for (int j = 0; j < getallen[i].length; j++)
+			{
+				gesorteerd[i * getallen[0].length + j] = getallen[i][j];
+			}
+		}
+		Arrays.sort(gesorteerd, new Comparator<IVakje>() {
+	        @Override
+	        public int compare(IVakje v1, IVakje v2) {
+	            return v1.domeinGrootte() - v2.domeinGrootte();
+	        }
+	    });
 		//TODO
 	}
 	
