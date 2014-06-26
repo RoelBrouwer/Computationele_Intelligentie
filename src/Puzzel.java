@@ -58,10 +58,10 @@ public class Puzzel {
 		mode = determineMethod();
 		
 		Sudoku sudoku; 
-		if(mode.equals("b") || mode.equals("s")) sudoku = new Sudoku(sud);
+		if(mode.equals("b") || mode.equals("s") || mode.equals("f") || mode.equals("m")) sudoku = new Sudoku(sud);
 		else sudoku = new Sudoku(n, sud);
 		System.out.println(sudoku);
-		if(!mode.equals("b") && !mode.equals("s")) System.out.println(sudoku.evalueer());
+		if(!mode.equals("b") && !mode.equals("s") && !mode.equals("f") && !mode.equals("m")) System.out.println(sudoku.evalueer());
 		
 		switch (mode)
 		{
@@ -75,7 +75,15 @@ public class Puzzel {
 				backtracking(sudoku);
 				break;
 			case "s":
+				sorteren = true;
 				backtracking(sudoku);
+				break;
+			case "f":
+				forwardChecking(sudoku);
+				break;
+			case "m":
+				sorteren = true;
+				forwardChecking(sudoku);
 				break;
 			default:
 				break;
@@ -311,6 +319,70 @@ public class Puzzel {
 				
 	}
 	
+private static void forwardChecking(Sudoku sudoku) {
+		
+		sudoku.bepaalInitieleVrijheidsgraad();
+		if (sorteren)
+		{
+			sudoku.eenmaligSorteren();
+		}
+		Sudoku nieuwesudoku = forwardCheckingRecursief(sudoku);
+		
+		if(nieuwesudoku != null) {
+			System.out.println("Oplossing gevonden!");
+			System.out.println(nieuwesudoku);
+		} else System.out.println("Geen oplossing.");
+		
+		
+		
+		
+	}
+	
+	private static Sudoku forwardCheckingRecursief(Sudoku sudoku)  {
+		if(sudoku.volledigIngevuld()) {
+			return sudoku;
+		}
+		
+		IVakje vakje;
+		if (sorteren)
+		{
+			sudoku.opnieuwSorteren();
+			vakje = vindVolgendeGesorteerd(sudoku);
+		}
+		else
+		{
+			vakje = vindVolgende(sudoku);
+		}
+		if (vakje.getDomein() == null) System.out.println("Gekkigheid");
+		for(int i = 0; i < vakje.getDomein().length; i++) {
+			
+			
+			if(vakje.elementInDomein(i+1)) {
+				boolean[] bewaar = new boolean[vakje.getDomein().length];
+				for(int k = 0; k < bewaar.length; k++) {
+					if(vakje.getDomein()[k]) bewaar[k] = true;
+					else bewaar[k] =false;
+				}
+				
+				vakje.setWaarde(i+1);
+				
+				if(sudoku.consistent(vakje.getX(), vakje.getY())) {	
+					// We kopieren de sudoku, en passen in de nieuwe sudoku de domeinen aan
+					Sudoku extrasudoku = new Sudoku(sudoku, true);
+					if (extrasudoku.pasDomeinAan(vakje.getX(), vakje.getY()))
+					{
+						Sudoku nieuwesudoku = forwardCheckingRecursief(extrasudoku);
+						if(nieuwesudoku != null) return nieuwesudoku;
+					}
+				}
+				vakje.setWaarde(0);
+				vakje.setDomein(bewaar);
+			}
+		}
+		return null;
+				
+	}
+	
 	private static IVakje vindVolgende(Sudoku sudoku) {
 		for(int i = 0; i < sudoku.getGrid().length; i++) {
 			for(int j = 0; j < sudoku.getGrid()[0].length; j++) {
@@ -330,9 +402,9 @@ public class Puzzel {
 	}
 	
 	private static String determineMethod() {
-		System.out.println("Voor Random Restart Hill-Climbing, voer \"r\" in.\nVoor Iterated Local Search, voer \"i\" in.\nVoor CSP - Backtracking, voer \"b\" in.\nVoor CSP - Backtracking (eenmalig gesorteerd), voer \"s\" in.\nVoor CSP - Forward checking, voer \"f\" in.");
+		System.out.println("Voor Random Restart Hill-Climbing, voer \"r\" in.\nVoor Iterated Local Search, voer \"i\" in.\nVoor CSP - Backtracking, voer \"b\" in.\nVoor CSP - Backtracking (eenmalig gesorteerd), voer \"s\" in.\nVoor CSP - Forward checking, voer \"f\" in.\nVoor CSP - Forward checking (MRV), voer \"m\" in.");
 		String s = readLine();
-		if(s.equals("i") || s.equals("r") || s.equals("b") || s.equals("s") || s.equals("f")) return s;
+		if(s.equals("i") || s.equals("r") || s.equals("b") || s.equals("s") || s.equals("f") || s.equals("m")) return s;
 		else return determineMethod();
 	}
 	

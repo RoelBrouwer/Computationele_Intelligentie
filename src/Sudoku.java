@@ -7,7 +7,7 @@ public class Sudoku {
 	IVakje[] gesorteerd; // Alleen gebruikt voor de tweede variant van backtracking
 	Constraint[][][] constraints;
 	
-	// Constructor die een kopie maakt van het meegegeven object, alleen voor hill-climbing
+	// Constructor die een kopie maakt van het meegegeven object
 	Sudoku(Sudoku sudoku)
 	{
 		this.getallen = new IVakje[sudoku.getallen.length][sudoku.getallen[0].length];
@@ -25,8 +25,98 @@ public class Sudoku {
 				}
 			}
 		}
-		this.gesorteerd = sudoku.gesorteerd;
-		this.constraints = sudoku.constraints;
+	}
+	
+	Sudoku(Sudoku sudoku, boolean x)
+	{
+		this.getallen = new IVakje[sudoku.getallen.length][sudoku.getallen[0].length];
+		for (int i = 0; i < getallen.length; i++)
+		{
+			for (int j = 0; j < getallen[i].length; j++)
+			{
+				this.getallen[i][j] = new Variabelen(sudoku.getallen[i][j].getWaarde(), sudoku.getallen[i][j].getDomein(), sudoku.getallen[i][j].getX(), sudoku.getallen[i][j].getY());
+			}
+		}
+		if (sudoku.gesorteerd != null)
+		{
+			this.gesorteerd = new IVakje[sudoku.gesorteerd.length];
+			for (int i = 0; i < getallen.length; i++)
+			{
+				for (int j = 0; j < getallen[0].length; j++)
+				{
+					this.gesorteerd[i * getallen[0].length + j] = this.getallen[i][j];
+				}
+			}
+			Arrays.sort(this.gesorteerd, new Comparator<IVakje>() {
+		        @Override
+		        public int compare(IVakje v1, IVakje v2) {
+		            return v1.domeinGrootte() - v2.domeinGrootte();
+		        }
+		    });
+		}
+		if (sudoku.constraints != null)
+		{
+			// We kunnen de constraints gerust opnieuw aanmaken
+			int n = (int) Math.sqrt(this.getallen.length);
+			constraints = new Constraint[n*n][n*n][2 * (n * n - 1) + ((n - 1) * (n - 1))];
+			// Eerst alle rijen
+			for (int i = 0; i < n * n; i++)
+			{
+				// Voor alle vakjes in de rij
+				for (int j = 0; j < n * n; j++)
+				{
+					// Voeg een constraint toe voor de vakjes waar het vakje nog geen constraint mee heeft.
+					for (int k = j + 1; k < n * n; k++)
+					{
+						Constraint add = new Constraint(getallen[i][j], getallen[i][k]);
+						constraints[i][j][k - 1] = add;
+						constraints[i][k][j] = add;
+					}
+				}
+			}
+			// Dan de kolommen
+			for (int i = 0; i < n * n; i++)
+			{
+				// Voor alle vakjes in de kolom
+				for (int j = 0; j < n * n; j++)
+				{
+					// Voeg een constraint toe voor de vakjes waar het vakje nog geen constraint mee heeft.
+					for (int k = j + 1; k < n * n; k++)
+					{
+						Constraint add = new Constraint(getallen[j][i], getallen[k][i]);
+						constraints[j][i][n * n - 1 + k - 1] = add;
+						constraints[k][i][n * n - 1 + j] = add;
+					}
+				}
+			}
+			// En de blokken
+			// l & k = voor alle blokken
+			for (int l = 0; l < n; l++)
+			{
+				for (int k = 0; k < n; k ++)
+				{
+					// f & h voor alle vakjes in het blok
+					for (int f = 0; f < n; f++)
+					{
+						for (int h = 0; h < n; h++)
+						{
+							for (int i = f + 1; i < n; i++)
+							{
+								for (int j = 0; j < n; j++)
+								{
+									if (h != j)
+									{
+										Constraint add = new Constraint(getallen[l * n + f][k * n + h], getallen[l * n + i][k * n + j]);
+										constraints[l * n + f][k * n + h][2 * (n * n) - 3 + findNextFree(constraints, l * n + f, k * n + h, n)] = add;
+										constraints[l * n + i][k * n + j][2 * (n * n) - 3 + findNextFree(constraints, l * n + i, k * n + j, n)] = add;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	// Constructor voor een wilekeurige begintoestand voor hill-climbing zonder vast vakjes
@@ -330,12 +420,37 @@ public class Sudoku {
 		}
 	}
 	
+	public boolean pasDomeinAan(int x, int y)
+	{
+		for (int i = 0; i < constraints[x][y].length; i++)
+		{
+			if (constraints[x][y][i].getV1() == getallen[x][y])
+			{
+				constraints[x][y][i].getV2().domeinelementVerwijderen(getallen[x][y].getWaarde());
+				if (constraints[x][y][i].getV2().domeinGrootte() == 0) 
+				{
+					return false;
+				}
+			}
+			else
+			{
+				constraints[x][y][i].getV1().domeinelementVerwijderen(getallen[x][y].getWaarde());
+				if (constraints[x][y][i].getV1().domeinGrootte() == 0) 
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	public void eenmaligSorteren()
 	{
+		gesorteerd = new IVakje[getallen.length * getallen.length];
 		// Sla tweedimensionale array plat
 		for (int i = 0; i < getallen.length; i++)
 		{
-			for (int j = 0; j < getallen[i].length; j++)
+			for (int j = 0; j < getallen[0].length; j++)
 			{
 				gesorteerd[i * getallen[0].length + j] = getallen[i][j];
 			}
@@ -346,7 +461,16 @@ public class Sudoku {
 	            return v1.domeinGrootte() - v2.domeinGrootte();
 	        }
 	    });
-		//TODO
+	}
+	
+	public void opnieuwSorteren()
+	{
+		Arrays.sort(gesorteerd, new Comparator<IVakje>() {
+	        @Override
+	        public int compare(IVakje v1, IVakje v2) {
+	            return v1.domeinGrootte() - v2.domeinGrootte();
+	        }
+	    });
 	}
 	
 	// toString() functie
