@@ -53,7 +53,8 @@ Om het programma te gebruiken, volgt u het volgende stappenplan:
 \begin{itemize}
 \item Typ \textit{r} voor Random Restart Hill-Climbing;
 \item Typ \textit{i} voor Iterated Local Search;
-\item Typ \textit{b} voor Constraint Satisfaction - Backtracking;
+\item Typ \textit{b} voor Constraint Satisfaction - Backtracking zonder sorteren;
+\item Typ \textit{?} voor Constraint Satisfaction - Backtracking met (eenmalig) sorteren;
 \item Typ \textit{f} voor Constraint Satisfaction - Backtracking met forward checking.
 \end{itemize}
 \item Het programma zal nu een oplossing voor u gaan zoeken en u informatie over deze oplossing geven.
@@ -258,7 +259,7 @@ Hieronder laten we zien hoe het probleem gerepresenteerd wordt, door een (deel v
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
-Sudoku(Input)
+Sudoku (Input)
 	// Input is de originele input waaruit de begintoestand gehaald is.
 	X = Variabelen[n * n][n * n];
 	// l en k voor de blokken, i en j identificerren de vakjes in de blokken.
@@ -291,13 +292,23 @@ Gegeven dat een bepaald vakje gewijzigd is, wordt met behulp van onderstaande me
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
-Consistent(X, Y)
+Consistent (X, Y)
 	// X en Y zijn de "coördinaten" van het betreffende vakje in de array.
 	for i = 0 tot Constraints[X][Y].length
 		// Als een van de constraints geschonden wordt, moet de methode false teruggeven.
 		if (Constraints[X][Y][i].ConstraintGeschonden())
 			return false;
 	return true;
+\end{lstlisting}
+\end{minipage}
+
+\subsubsection{Bepalen initi\"{e}le vrijheidsgraad}
+Om het probleem goed te representeren, moeten de domeinen van de verschillende variabelen aan het begin op de goede manier gedefinieerd zijn. Met andere woorden: de waardes die bij voorbaat nooit ingevuld kunnen worden in die vakjes moeten uit hun domein worden gehaald.
+
+TODO
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
 \end{lstlisting}
 \end{minipage}
 
@@ -308,14 +319,14 @@ Er wordt aan enkele hulpmethoden gerefereerd, waarvan geen pseudocode beschikbaa
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
-Backtracking(Sudoku)
+Backtracking (Sudoku)
 	NieuweSudoku = BacktrackingRecursief(Sudoku);
 	if (NieuweSudoku != null)
 		Print(NieuweSudoku);
 	else
 		Print("Geen oplossing.");
 
-BacktrackingRecursief(Sudoku)
+BacktrackingRecursief (Sudoku)
 	// Als de sudoku volledig ingevuld is, zijn we klaar in de recursie
 	if(Sudoku.volledigIngevuld())
 		return Sudoku;
@@ -343,8 +354,24 @@ BacktrackingRecursief(Sudoku)
 \end{lstlisting}
 \end{minipage}
 
+\subsubsection{Toevoegen van sortering}
+TODO
+
+De methode die dit eenmalige sorteren voor ons doet ziet er, in pseudocode, als volgt uit:
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+EenmaligSorteren ()
+\end{lstlisting}
+\end{minipage}
+
 \subsection{Forward Checking}
 TODO
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
 
 \chapter{Experimentele resultaten}
 \section{Hill-climbing}
@@ -647,6 +674,7 @@ Voor de eerste twee puzzels in deze sectie zijn 5 testruns uitgevoerd, voor de l
 \end{tabular} 
 
 \chapter{Testresultaten Iterated Local Search}
+Het vinden van lokale maxima is uitgebreid getest bij de tests voor random restart. Voor iterated local search verandert hier weinig aan. Alle hieronder staande data heeft dus betrekking op het vinden van globale optima.
 \section{9 * 9 puzzels (n = 3)}
 \subsection{Puzzel 1 (test\_n3\_1\_ci)}
 

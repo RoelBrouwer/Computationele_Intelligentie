@@ -5,6 +5,28 @@ public class Sudoku {
 	IVakje[] gesorteerd; // Alleen gebruikt voor de tweede variant van backtracking
 	Constraint[][][] constraints;
 	
+	// Constructor die een kopie maakt van het meegegeven object, alleen voor hill-climbing
+	Sudoku(Sudoku sudoku)
+	{
+		this.getallen = new IVakje[sudoku.getallen.length][sudoku.getallen[0].length];
+		for (int i = 0; i < getallen.length; i++)
+		{
+			for (int j = 0; j < getallen[i].length; j++)
+			{
+				if (sudoku.getallen[i][j].getVariabel())
+				{
+					this.getallen[i][j] = new Variabel(sudoku.getallen[i][j].getWaarde());
+				}
+				else
+				{
+					this.getallen[i][j] = new Vast(sudoku.getallen[i][j].getWaarde());
+				}
+			}
+		}
+		this.gesorteerd = sudoku.gesorteerd;
+		this.constraints = sudoku.constraints;
+	}
+	
 	// Constructor voor een wilekeurige begintoestand voor hill-climbing zonder vast vakjes
 	Sudoku(int n)
 	{

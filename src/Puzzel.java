@@ -9,7 +9,7 @@ import java.io.*;
 public class Puzzel {
 
 	static int n; 
-	static int s = 30;
+	static int s = 50;
 	static Random randomGen = new Random();
 	static String mode;
 	
@@ -97,11 +97,16 @@ public class Puzzel {
 				//System.out.println("Evalueerfunctie: " + sudoku.evalueer());
 				//System.out.println(sudoku);
 				//System.out.println();
-				// Random walk van s lang, s is bovenaan deze file in te stellen.
-				for (int i = 0; i < s; i++)
+				nieuwesudoku = new Sudoku(sudoku);
+				while (nieuwesudoku.evalueer() <= sudoku.evalueer()) 
 				{
-					sudoku = randomZoekOperator(sudoku);
+					// Random walk van s lang, s is bovenaan deze file in te stellen.
+					for (int i = 0; i < s; i++)
+					{
+						nieuwesudoku = randomZoekOperator(nieuwesudoku);
+					}
 				}
+				sudoku = new Sudoku(nieuwesudoku);
 			}
 			else 
 				sudoku = nieuwesudoku;
