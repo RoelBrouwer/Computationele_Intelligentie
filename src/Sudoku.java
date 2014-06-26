@@ -332,10 +332,11 @@ public class Sudoku {
 	
 	public void eenmaligSorteren()
 	{
+		gesorteerd = new IVakje[getallen.length * getallen.length];
 		// Sla tweedimensionale array plat
 		for (int i = 0; i < getallen.length; i++)
 		{
-			for (int j = 0; j < getallen[i].length; j++)
+			for (int j = 0; j < getallen[0].length; j++)
 			{
 				gesorteerd[i * getallen[0].length + j] = getallen[i][j];
 			}
@@ -346,7 +347,6 @@ public class Sudoku {
 	            return v1.domeinGrootte() - v2.domeinGrootte();
 	        }
 	    });
-		//TODO
 	}
 	
 	// toString() functie
