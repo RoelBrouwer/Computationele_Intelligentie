@@ -126,7 +126,6 @@ public class Puzzel {
 						derdesudoku = zoekoperator(derdesudoku);
 					}
 				}
-				System.out.println("!!!!!!!!");
 				sudoku = new Sudoku(nieuwesudoku);
 			}
 			else 
