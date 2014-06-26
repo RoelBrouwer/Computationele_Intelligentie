@@ -267,7 +267,8 @@ Sudoku(Input)
 			for i = 0 tot n
 				for j = 0 tot n
 					waarde = Input[l * n + i][k * n + j];
-					// Als het een leeg vakje is, maken we een variabelen aan met een volledig domein.
+					// Als het een leeg vakje is, maken we een variabelen aan met een volledig
+					// domein.
 					if (waarde == 0)
 						X[l * n + i][k * n + j] = Variabelen(0, VolDomein);
 					// Anders is het een gevuld vakje, en bevat het domein maar een element.
@@ -323,7 +324,9 @@ BacktrackingRecursief(Sudoku)
 	Vakje = VindVolgende(Sudoku);
 	
 	for i = 0 tot Vakje.domein.length
-		// Als i in het domein zit, gaan we eens proberen om Vakje in te vullen met i + 1. We zetten de waarde op i + 1 (en verkleinen ook het domein zodat het alleen nog i + 1 bevat).
+		// Als i in het domein zit, gaan we eens proberen om Vakje in te vullen met i + 1. We 
+		// zetten de waarde op i + 1 (en verkleinen ook het domein zodat het alleen nog i + 1
+		// bevat).
 		if (Vakje.ElementInDomein(i + 1)) {
 			OudDomein = Vakje.domein;
 			Vakje.waarde = i + 1;
@@ -331,7 +334,8 @@ BacktrackingRecursief(Sudoku)
 			if (Sudoku.Consistent(Vakje.X, Vakje.Y))
 				NieuweSudoku = BacktrackingRecursief(Sudoku);
 				if (NieuweSudoku != null) return NieuweSudoku;
-			// Als we hier terecht komen is het blijkbaar mislukt en kan i + 1 niet in Vakje worden ingevuld. We maken het vakje dus weer leeg en zetten het domein netjes terug. 
+			// Als we hier terecht komen is het blijkbaar mislukt en kan i + 1 niet in Vakje worden 
+			// ingevuld. We maken het vakje dus weer leeg en zetten het domein netjes terug. 
 			Vakje.waarde = 0;
 			Vakje.domein = OudDomein;
 	// Er kan niets voor dit vakje worden ingevuld, dus de puzzel is onoplosbaar:
@@ -364,7 +368,20 @@ Wanneer we dus kiezen voor $>$ in plaats van $\geq$ hebben we meer kans op een (
 \subsection{Random Restart}
 Voor een uitgebreid(er) overzicht van de test-resultaten, zie \textit{appendix A}.
 \subsubsection{Effici\"{e}ntie}
-(Rekentijd en aantal toestanden tot globaal optimum)
+De lokale maxima hebben we hierboven al besproken - het bereiken van lokale maxima vanuit een willekeurige begintoestand gaat snel. Maar dat is niet wat we willen.
+
+Het is een puur kansspel - een oplossing wordt gevonden op het moment dat de willekeurige begintoestand in het attractiegebied van het/een globaal optimum blijkt te liggen. Tot die tijd blijft het algoritme bergjes beklimmen om er vervolgens achter te komen dat de top van het bergje geen oplossing is. Het is mogelijk dat de eerste begintoestand al direct tot de oplossing leidt, er is ook een kans dat het optimum niet in eindige tijd gevonden wordt (als er toevallig nooit een begintoestand in het attractiegebied van het globale optimum wordt gegenereerd). Meestal echter moet er enkele honderden of duizenden keren opnieuw gestart worden om een oplossing te vinden.
+
+Hoe groot de kans is dat het globale optimum gevonden wordt verschilt ook per puzzel, bij de ene puzzel lijken er minder optima te zijn dan bij de andere en/of heeft het globale optimum een groter attractiegebied.
+
+Voor puzzels met $n > 3$ wordt er zeer zelden binnen 15 minuten een oplossing gevonden. Voor puzzels met $n=3$ kan dit nog wel. Met een gemiddelde van 25 stappen nodig voor het vinden van een lokaal optimum, lijkt het landschap voor puzzel 1 iets minder optima te bevatten dan die van puzzel 2 t/m 5 (gemiddeld zo'n 7 stappen nodig).
+
+Bij puzzel 1 wordt een oplossing gemiddeld na zo'n 16 seconden gevonden (iets meer dan 100.000 stappen en 4000 herstarts). Terwijl de puzzels 2 t/m 4 binnen een kwartier nog niet met een antwoord komen. Het lijkt erop dat het globale maximum van puzzel 1 een relatief groot attractiegebeid heeft.
+
+Dat dit niet \'{e}\'{e}n op \'{e}\'{e}n samenhangt met het feit dat er minder optima zijn in puzzel 1, bewijst puzzel 5. Bij puzzel 5 zijn gemiddeld 6 stappen nodig voor het bereiken van een lokaal optimum. Toch wordt een globaal optimum gemiddeld binnen 4 seconden (iets meer dan 30.000 stappen, 1700 optima) gevonden. De laatste klim, naar het globale optimum, is dan ook gemiddeld 31 stappen lang, in plaats van zes. Dit laat zien dat het attractiegebied van het globale optimum groter is dan dat van de meeste lokale maxima, en niet kleiner dan dat van puzzel 1.
+
+Alles bij elkaar hangt het dus sterk af van de vorm van het landschap hoe effici\"{e}nt deze zoekmethode is. Bepaalde sudoku's kunnen behoorlijk snel worden opgelost, zolang het globale optimum een redelijk groot attractiegebied heeft. Anders is handmatig oplossen waarschijnlijk sneller.
+
 \subsection{Iterated Local Search}
 Voor een uitgebreid(er) overzicht van de test-resultaten, zie \textit{appendix B}.
 \subsubsection{Effici\"{e}ntie}
