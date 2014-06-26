@@ -245,6 +245,11 @@ IteratedLocalSearch (HuidigeSudoku)
 				// Maak een random walk van S lang, S kan gevarieerd worden.
 				for i = 0 tot S
 					NieuweSudoku = RandomZoekOperator(NieuweSudoku);
+				// Loop opnieuw omhoog
+				DerdeSudoku = NieuweSudoku; 
+				while (DerdeSudoku != null)
+					NieuweSudoku = DerdeSudoku;
+					DerdeSudoku = ZoekOperator(DerdeSudoku)
 			HuidigeSudoku = NieuweSudoku;
 		else 
 			// Anders gaan we door met de gevonden toestand.
