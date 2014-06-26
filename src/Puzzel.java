@@ -240,7 +240,8 @@ public class Puzzel {
 	}
 	
 	private static void backtracking(Sudoku sudoku) {
-				
+		
+		sudoku.bepaalInitieleVrijheidsgraad();
 		Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
 		
 		if(nieuwesudoku != null) {
@@ -307,9 +308,9 @@ public class Puzzel {
 	}
 	
 	private static String determineMethod() {
-		System.out.println("Wil je Iterated Local Search? Voer dan een \"i\" in. \nWil je Random Restart Hill-Climbing? Voer dan een \"r\" in.");
+		System.out.println("Voor Random Restart Hill-Climbing, voer \"r\" in.\nVoor Iterated Local Search, voer \"i\" in.\nVoor CSP - Backtracking, voer \"b\" in.\nVoor CSP - Backtracking (eenmalig gesorteerd), voer \"s\" in.\nVoor CSP - Forward checking, voer \"f\" in.");
 		String s = readLine();
-		if(s.equals("i") || s.equals("r") || s.equals("b")) return s;
+		if(s.equals("i") || s.equals("r") || s.equals("b") || s.equals("s") || s.equals("f")) return s;
 		else return determineMethod();
 	}
 	

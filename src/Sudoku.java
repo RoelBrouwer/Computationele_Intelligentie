@@ -296,6 +296,33 @@ public class Sudoku {
 	public void bepaalInitieleVrijheidsgraad()
 	{
 		//TODO
+		// Voor elk vakje lopen we alle constraints af die voor het vakje gelden.
+		for (int i = 0; i < getallen.length; i++)
+		{
+			for (int j = 0; j < getallen[i].length; j++)
+			{
+				for (int c = 0; c < constraints[i][j].length; c++)
+				{
+					if (constraints[i][j][c].getV1() == getallen[i][j])
+					{
+						// Als het andere vakje dat meedoet aan het constraint een vast vakje is,
+						// verwijderen we de waarde van dat vakje uit het domein van ons vakje.
+						if (constraints[i][j][c].getV2().domeinGrootte() == 1)
+						{
+							getallen[i][j].domeinelementVerwijderen(constraints[i][j][c].getV2().getWaarde());
+						}
+					}
+					else
+					{
+						// Symmetrisch
+						if (constraints[i][j][c].getV1().domeinGrootte() == 1)
+						{
+							getallen[i][j].domeinelementVerwijderen(constraints[i][j][c].getV1().getWaarde());
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void eenmaligSorteren()
