@@ -347,6 +347,7 @@ Er wordt aan enkele hulpmethoden gerefereerd, waarvan geen pseudocode beschikbaa
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
 Backtracking (Sudoku)
+	Sudoku.BepalenInitieleVrijheidsgraad();
 	NieuweSudoku = BacktrackingRecursief(Sudoku);
 	if (NieuweSudoku != null)
 		Print(NieuweSudoku);
@@ -355,15 +356,14 @@ Backtracking (Sudoku)
 
 BacktrackingRecursief (Sudoku)
 	// Als de sudoku volledig ingevuld is, zijn we klaar in de recursie
-	if(Sudoku.volledigIngevuld())
+	if (Sudoku.VolledigIngevuld())
 		return Sudoku;
 	// We pakken het eerste vakje (variabele) dat nog niet is ingevuld.	
 	Vakje = VindVolgende(Sudoku);
 	for i = 0 tot Vakje.domein.length
-		// Als i in het domein zit, gaan we eens proberen om Vakje in te vullen met i + 1. We 
-		// zetten de waarde op i + 1 (en verkleinen ook het domein zodat het alleen nog i + 1
-		// bevat).
-		if (Vakje.ElementInDomein(i + 1)) {
+		// Als i in het domein zit, gaan we eens proberen om Vakje in te vullen met i + 1. We zetten 
+		// de waarde op i + 1 (en verkleinen ook het domein zodat het alleen nog i + 1 bevat).
+		if (Vakje.ElementInDomein(i + 1))
 			OudDomein = Vakje.domein;
 			Vakje.waarde = i + 1;
 			// Als er geen constraints geschonden worden, gaan we een niveau dieper de recursie in.
@@ -401,7 +401,7 @@ EenmaligSorteren ()
 
 Het is dan een kleine stap om dit in het bestaande backtracking algoritme toe te voegen. Aan de pseudocode op de vorige pagina moet het volgende gebeuren:
 \begin{itemize}
-\item Tussen regel 1 en 2 moet het volgende worden toegevoegd:
+\item Tussen regel 2 en 3 moet het volgende worden toegevoegd:
 \end{itemize}
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
@@ -409,7 +409,7 @@ Sudoku.EenmaligSorteren();
 \end{lstlisting}
 \end{minipage}
 \begin{itemize}
-\item Regel 12 en 13 moeten worden vervangen door:
+\item Regel 13 en 14 moeten worden vervangen door:
 \end{itemize}
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
@@ -420,18 +420,100 @@ Vakje = VindVolgendeGesorteerd(Sudoku);
 \end{minipage}
 
 \subsection{Forward Checking}
-TODO
+De implementatie van forward checking lijkt heel sterk op die van normale backtracking. We hebben \'{e}\'{e}n extra methode nodig, een methode die na het invullen van een vakje de domeinen van de vakjes die worden be\"{i}nvloed aanpast. Dat doet \textit{PasDomeinAan}. Deze methode checkt gelijk of een domein door de verandering niet leeg wordt, en returnt \textit{false} als dit ergens wel gebeurt.
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
+PasDomeinAan (I, J)
+	for int c = 0 tot Constraints[I][J].length
+		// We kijken steeds naar het andere vakje, het vakje dat niet gelijk is aan X[I][J].
+		// Herinner dat X een dubbele array is met de variabelen
+		if (Constraints[I][J][c].V1 == X[I][J])
+			// Verwijder de waarde van X[I][J] uit het domein van V2
+			Constraints[I][J][c].V2.DomeinElementVerwijderen(X[I][J].waarde);
+			// Als het domein nu leeg wordt, moeten we stoppen.
+			if (Constraints[I][J][c].V2.DomeinGrootte() == 0) return false;
+		else
+			// Symmetrisch aan het bovenstaande
+			Constraints[I][J][c].V1.DomeinElementVerwijderen(X[I][J].waarde);
+			// Als het domein nu leeg wordt, moeten we stoppen.
+			if (Constraints[I][J][c].V1.DomeinGrootte() == 0) return false;
+	// Als we hier aankomen is alles goed gegaan.
+	return true;
+\end{lstlisting}
+\end{minipage}
+
+Met deze methode in de hand ziet de (pseudo-)code voor backtracking met forward checking er als volgt uit:
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+ForwardChecking (Sudoku)
+	Sudoku.BepalenInitieleVrijheidsgraad();
+	Nieuwesudoku = ForwardCheckingRecursief(Sudoku);
+	if (NieuweSudoku != null) {
+		Print(NieuweSudoku);
+	else 
+		Print("Geen oplossing.");
+	
+ForwardCheckingRecursief (Sudoku sudoku)
+	// Als de sudoku volledig ingevuld is, zijn we klaar in de recursie
+	if (Sudoku.VolledigIngevuld())
+		return Sudoku;
+	// We pakken het eerste vakje dat nog niet is gevuld.	
+	Vakje = VindVolgende(sudoku);
+	for i = 0 tot Vakje.domein.length
+		// Als i in het domein zit, gaan we eens proberen om Vakje in te vullen met i + 1. We 
+		// zetten de waarde op i + 1 (en verkleinen ook het domein zodat het alleen nog i + 1
+		// bevat).
+		if (Vakje.ElementInDomein(i + 1))
+			OudDomein = Vakje.domein;
+			Vakje.waarde = i + 1;
+			// Als er geen constraints geschonden worden, gaan we een niveau dieper de recursie in.
+			if (Sudoku.Consistent(Vakje.X, Vakje.Y))
+				// We kopieren de sudoku, en passen in de nieuwe sudoku de domeinen aan
+				ExtraSudoku = Sudoku;
+				if (ExtraSudoku.PasDomeinAan(Vakje.X, Vakje.Y))
+					NieuweSudoku = ForwardCheckingRecursief(ExtraSudoku);
+					if(NieuweSudoku != null) return NieuweSudoku;
+				Vakje.waarde = 0;
+				Vakje.domein = OudDomein;
+	return null;
 \end{lstlisting}
 \end{minipage}
 
 \subsubsection{Toevoegen van sortering}
-TODO
+We hebben al code om eenmalig te sorteren, nu hebben we nog een methode nodig die iedere keer opnieuw sorteert:
 
 \begin{minipage}{\textwidth}
 \begin{lstlisting}
+OpnieuwSorteren()
+	// Sorteer de array met vakjes, met als comparator een functie die de domeingroottes 
+	// vergelijkt.
+	Arrays.sort(Gesorteerd, Comparator() {
+	    Compare(V1, V2)
+	        return V1.domeinGrootte - V2.domeinGrootte;
+	});
+\end{lstlisting}
+\end{minipage}
+
+Het is dan een kleine stap om dit in het bestaande forward checking algoritme toe te voegen. Aan de pseudocode hierboven moet het volgende gebeuren:
+\begin{itemize}
+\item Tussen regel 2 en 3 moet het volgende worden toegevoegd:
+\end{itemize}
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+Sudoku.EenmaligSorteren();
+\end{lstlisting}
+\end{minipage}
+\begin{itemize}
+\item Regel 13 en 14 moeten worden vervangen door:
+\end{itemize}
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+// We sorteren de lijst met vakjes opnieuw...
+Sudoku.OpnieuwSorteren();
+// ...en pakken het volgende vakje uit de lijst
+Vakje = VindVolgendeGesorteerd(Sudoku);
 \end{lstlisting}
 \end{minipage}
 
@@ -477,9 +559,22 @@ Voor een uitgebreid(er) overzicht van de test-resultaten, zie \textit{appendix B
 (Rekentijd en aantal toestanden tot globaal optimum)
 \section{Constraint Satisfaction}
 \subsection{Backtracking}
+\subsubsection{Effici\"{e}ntie}
+\subsubsection{Effect van sorteren}
 \subsection{Forward Checking}
+\subsubsection{Effici\"{e}ntie}
+\subsubsection{Effect van sorteren}
 
 \chapter{Reflectie}
+\section{Implementatie algoritmen}
+Niet alle algoritmen waren even gemakkelijk te implementeren. De volgorde waarin ze in dit verslag behandeld worden is er een van oplopende moeilijkheid. 
+
+Het opzetten van de representatie van het probleem kostte het meeste tijd in het implementeren van de hill-climbing algoritme. Random restart en iterated local search waren relatief eenvoudig te implementeren toen de basis eenmaal stond.
+
+Voor Constraint Satisfaction geldt ongeveer hetzelfde. Het opzetten van de representatie bleek het lastigste. Het implementeren van backtracking was iets eenvoudiger, en het toevoegen van de optie tot sorteren was snel gedaan. Backtracking met forward checking implementeren kostte weer iets meer tijd, maar ook hier was het toevoegen van de optie tot sorteren snel gebeurd. Beide algoritmen waren duidelijk lastiger te implementeren dan de hill-climbing algoritmen. Zo was ook de basis van hill-climbing eenvoudiger te implementeren dan die van Constraint Satisfaction.
+
+\section{Experimenten}
+...TODO... Cornelis
 
 \begin{appendices}
 {\Huge \textbf{Appendices - introductie}}\newline

@@ -319,7 +319,7 @@ public class Puzzel {
 				
 	}
 	
-private static void forwardChecking(Sudoku sudoku) {
+	private static void forwardChecking(Sudoku sudoku) {
 		
 		sudoku.bepaalInitieleVrijheidsgraad();
 		if (sorteren)
@@ -353,7 +353,6 @@ private static void forwardChecking(Sudoku sudoku) {
 		{
 			vakje = vindVolgende(sudoku);
 		}
-		if (vakje.getDomein() == null) System.out.println("Gekkigheid");
 		for(int i = 0; i < vakje.getDomein().length; i++) {
 			
 			
