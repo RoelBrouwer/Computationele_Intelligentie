@@ -80,6 +80,11 @@ public class Puzzel {
 				break;
 			case "f":
 				forwardChecking(sudoku);
+				break;
+			case "m":
+				sorteren = true;
+				forwardChecking(sudoku);
+				break;
 			default:
 				break;
 		}
@@ -341,13 +346,14 @@ private static void forwardChecking(Sudoku sudoku) {
 		IVakje vakje;
 		if (sorteren)
 		{
+			sudoku.opnieuwSorteren();
 			vakje = vindVolgendeGesorteerd(sudoku);
 		}
 		else
 		{
 			vakje = vindVolgende(sudoku);
 		}
-		
+		if (vakje.getDomein() == null) System.out.println("Gekkigheid");
 		for(int i = 0; i < vakje.getDomein().length; i++) {
 			
 			
@@ -359,25 +365,20 @@ private static void forwardChecking(Sudoku sudoku) {
 				}
 				
 				vakje.setWaarde(i+1);
-				//vakje.domeinelementToevoegen(i+1);
-				//sudoku.getGetallen()[i][j].setWaarde(x);
 				
-				
-				if(sudoku.consistent(vakje.getX(), vakje.getY())) {
-					//inferences(sudoku);
-					//if(inferences != null) inferencesNaarAssignment()
-					
-					
-					Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
-					if(nieuwesudoku != null) return nieuwesudoku;
+				if(sudoku.consistent(vakje.getX(), vakje.getY())) {	
+					// We kopieren de sudoku, en passen in de nieuwe sudoku de domeinen aan
+					Sudoku extrasudoku = new Sudoku(sudoku, true);
+					if (extrasudoku.pasDomeinAan(vakje.getX(), vakje.getY()))
+					{
+						Sudoku nieuwesudoku = forwardCheckingRecursief(extrasudoku);
+						if(nieuwesudoku != null) return nieuwesudoku;
+					}
 				}
 				vakje.setWaarde(0);
 				vakje.setDomein(bewaar);
-				//vakje.domeinelementVerwijderen(i+1);
-				
 			}
 		}
-		 
 		return null;
 				
 	}
