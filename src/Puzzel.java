@@ -100,6 +100,7 @@ public class Puzzel {
 				nieuwesudoku = new Sudoku(sudoku);
 				while (nieuwesudoku.evalueer() <= sudoku.evalueer()) 
 				{
+					nieuwesudoku = new Sudoku(sudoku);
 					// Random walk van s lang, s is bovenaan deze file in te stellen.
 					for (int i = 0; i < s; i++)
 					{

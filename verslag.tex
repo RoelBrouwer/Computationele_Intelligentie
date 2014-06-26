@@ -231,9 +231,15 @@ IteratedLocalSearch (HuidigeSudoku)
 		NieuweSudoku = ZoekOperator(HuidigeSudoku);
 		// Als een lokaal optimum wordt bereikt, daar weglopen.
 		if (NieuweSudoku == null)
-			// Maak een random walk van S lang, S kan gevarieerd worden.
-			for i = 0 tot S
-				HuidigeSudoku = RandomZoekOperator(HuidigeSudoku);
+			// De vorige stap was het lokale optimum, die terughalen.
+			NieuweSudoku = HuidigeSudoku;
+			while (NieuweSudoku.Evalueer() <= HuidigeSudoku.Evalueer())
+				// Als het nieuwe optimum niet beter was, keren we terug.
+				NieuweSudoku = HuidigeSudoku; 
+				// Maak een random walk van S lang, S kan gevarieerd worden.
+				for i = 0 tot S
+					NieuweSudoku = RandomZoekOperator(NieuweSudoku);
+			HuidigeSudoku = NieuweSudoku;
 		else 
 			// Anders gaan we door met de gevonden toestand.
 			HuidigeSudoku = NieuweSudoku;
