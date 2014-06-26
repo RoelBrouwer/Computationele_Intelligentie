@@ -2,6 +2,7 @@
 public class Sudoku {
 	
 	IVakje[][] getallen; 
+	IVakje[] gesorteerd; // Alleen gebruikt voor de tweede variant van backtracking
 	Constraint[][][] constraints;
 	
 	// Constructor voor een wilekeurige begintoestand voor hill-climbing zonder vast vakjes
@@ -268,6 +269,16 @@ public class Sudoku {
 			}
 		}*/
 		return true;
+	}
+	
+	public void bepaalInitieleVrijheidsgraad()
+	{
+		//TODO
+	}
+	
+	public void eenmaligSorteren()
+	{
+		//TODO
 	}
 	
 	// toString() functie
