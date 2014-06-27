@@ -1,5 +1,5 @@
 \documentclass[]{report}
-\usepackage[margin=1.0in]{geometry}
+\usepackage[margin=0.8in]{geometry}
 
 
 % Title Page
@@ -592,7 +592,7 @@ Bij backtracking werden de 3x3 sudoku's in enkele tientallen milliseconden opgel
  
 
 \subsection{3x3-sudoku's}
-Menneske-sudoku 2:
+\ \ \ \ Menneske-sudoku 2:
 \begin{tabular}{|c|c|c||c|c|c||c|c|c|}
 \hline
 0 &0& 1& 3& 0& 0& 8& 0& 6 \\ \hline
@@ -649,8 +649,8 @@ Menneske-sudoku 5:
 \end{tabular}
 
 \subsection{4x4 sudoku's}
-Menneske-sudoku 2:
-\begin{tabular}{|c|c|c|c||c|c|c|c||c|c|c|c||c|c|c|c}
+\ \ \ \ Menneske-sudoku 2:
+\begin{tabular}{|c|c|c|c||c|c|c|c||c|c|c|c||c|c|c|c|}
 \hline
 3&9&12&0&0&14&16&10&0&5&0&0&0&0&0&0\\\hline
 7&0&0&0&0&8&0&5&0&0&0&3&15&11&0&0\\\hline
@@ -671,7 +671,7 @@ Menneske-sudoku 2:
 \end{tabular}
 
 Menneske-sudoku 3:
-\begin{tabular}{|c|c|c|c||c|c|c|c||c|c|c|c||c|c|c|c}
+\begin{tabular}{|c|c|c|c||c|c|c|c||c|c|c|c||c|c|c|c|}
 \hline
 0&0&8&0&4&7&0&0&13&0&14&0&0&10&0&11\\\hline
 9&0&0&4&15&8&13&0&0&0&7&2&0&0&0&0\\\hline
@@ -692,7 +692,7 @@ Menneske-sudoku 3:
 \end{tabular}
 
 Menneske-sudoku 4:
-\begin{tabular}{|c|c|c|c||c|c|c|c||c|c|c|c||c|c|c|c}
+\begin{tabular}{|c|c|c|c||c|c|c|c||c|c|c|c||c|c|c|c|}
 \hline
 0&12&0&0&5&0&16&0&0&7&8&0&1&0&0&0\\\hline
 0&0&0&0&0&0&0&8&3&0&0&0&6&0&0&0\\\hline
@@ -711,8 +711,9 @@ Menneske-sudoku 4:
 0&0&0&3&0&0&0&10&14&0&0&0&0&0&0&0\\\hline
 0&0&0&15&0&3&1&0&0&10&0&2&0&0&5&0\\\hline
 \end{tabular}
+
 Menneske-sudoku 5:
-\begin{tabular}{|c|c|c|c||c|c|c|c||c|c|c|c||c|c|c|c}
+\begin{tabular}{|c|c|c|c||c|c|c|c||c|c|c|c||c|c|c|c|}
 \hline
 0&11&0&0&0&0&0&13&3&1&0&0&7&0&14&12\\\hline
 0&0&4&0&9&0&0&0&0&0&16&0&0&0&11&8\\\hline
@@ -1132,7 +1133,7 @@ Het vinden van lokale maxima is uitgebreid getest bij de tests voor random resta
 \subsection{Puzzel 5 (test\_n5\_5\_menneske)}
 
 \chapter{Testresultaten Constraint Satisfaction - backtracking}
-Aangezien er bij backtracking geen kanselement betrokken is, hebben we dit algoritme minder uitvoerig getest. We hebben voor iedere sudoku en iedere variant twee keer een globaal maximum berekend. Het weergegeven getal is de gemiddelde tijd in milliseconden. In sommige gevallen kon het algoritme geen oplossing vinden in de gestelde tijd. Dat staat aangegeven als ">5 minuten". In dat geval hebben we het algoritme 5 minuten laten lopen en heeft het algoritme in die tijd geen oplossing kunnen vinden.
+Aangezien er bij backtracking geen kanselement betrokken is, hebben we dit algoritme minder uitvoerig getest. We hebben voor iedere sudoku en iedere variant twee keer een oplossing berekend. Het weergegeven getal is de gemiddelde tijd in milliseconden. In sommige gevallen kon het algoritme geen oplossing vinden in de gestelde tijd. Dat staat aangegeven als \textquotedblleft\textgreater 5 minuten". In dat geval hebben we het algoritme 5 minuten laten lopen en heeft het algoritme in die tijd geen oplossing kunnen vinden.
 \section{9 * 9 puzzels (n = 3)}
 \subsection{Puzzel 1 (test\_n3\_1\_ci)}
 \begin{tabular}{|c||c|c|c|c|}
@@ -1168,62 +1169,62 @@ Aangezien er bij backtracking geen kanselement betrokken is, hebben we dit algor
 \subsection{Puzzel 1 (test\_n4\_1\_ci)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & > 15 minuten & >15 minuten & > 15 minuten & 2844 \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & 2844 \\ 
 \hline 
 \end{tabular}
 \subsection{Puzzel 2 (test\_n4\_2\_menneske)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & 220080 \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & 220080 \\ 
 \hline 
 \end{tabular}
 \subsection{Puzzel 3 (test\_n4\_3\_menneske)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & 177496 \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & 177496 \\ 
 \hline 
 \end{tabular}
 \subsection{Puzzel 4 (test\_n4\_4\_menneske)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & > 5 minuten \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 5 minuten \\ 
 \hline 
 \end{tabular}
 \subsection{Puzzel 5 (test\_n4\_5\_menneske)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & 308394 \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & 308394 \\ 
 \hline 
 \end{tabular}
 \section{25 * 25 puzzels (n = 5)}
 \subsection{Puzzel 1 (test\_n5\_1\_ci)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & >15 minuten \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten \\ 
 \hline 
 \end{tabular}
 \subsection{Puzzel 2 (test\_n5\_2\_menneske)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & >15 minuten \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten \\ 
 \hline 
 \end{tabular}
 \subsection{Puzzel 3 (test\_n5\_3\_menneske)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & >15 minuten \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten \\ 
 \hline 
 \end{tabular}
 \subsection{Puzzel 4 (test\_n5\_4\_menneske)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & >15 minuten \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten \\ 
 \hline 
 \end{tabular}
 \subsection{Puzzel 5 (test\_n5\_5\_menneske)}
 \begin{tabular}{|c||c|c|c|c|}
 \hline . & Backtracking & Backtracking + sorteren & Forward checking & Forward checking en sorteren \\ 
-\hline \hline Tijd (ms) & >15 minuten & >15 minuten & >15 minuten & >15 minuten \\ 
+\hline \hline Tijd (ms) & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten & \textgreater 15 minuten \\ 
 \hline 
 \end{tabular}
 
