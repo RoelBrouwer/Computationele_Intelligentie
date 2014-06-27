@@ -9,7 +9,7 @@ import java.io.*;
 public class Puzzel {
 
 	static int n; 
-	static int s = 100;
+	static int s = 10;
 	static Random randomGen = new Random();
 	static String mode;
 	static boolean sorteren = false;
@@ -104,7 +104,7 @@ public class Puzzel {
 			{
 				
 				nieuwesudoku = new Sudoku(sudoku);
-				while (nieuwesudoku.evalueer() <= sudoku.evalueer()) 
+				while (nieuwesudoku.evalueer() >= sudoku.evalueer()) 
 				{
 					tellerLok = 0;
 					nieuwesudoku = new Sudoku(sudoku);
@@ -112,6 +112,7 @@ public class Puzzel {
 					for (int i = 0; i < s; i++)
 					{
 						nieuwesudoku = randomZoekOperator(nieuwesudoku);
+						tellerGlob++;
 					}
 					// Loop opnieuw omhoog
 					Sudoku derdesudoku = new Sudoku(nieuwesudoku); 
@@ -119,6 +120,7 @@ public class Puzzel {
 					{
 						nieuwesudoku = new Sudoku(derdesudoku);
 						derdesudoku = zoekoperator(derdesudoku);
+						tellerGlob++;
 					}
 				}
 				sudoku = new Sudoku(nieuwesudoku);

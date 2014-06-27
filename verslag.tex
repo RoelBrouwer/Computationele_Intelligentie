@@ -239,7 +239,7 @@ IteratedLocalSearch (HuidigeSudoku)
 		if (NieuweSudoku == null)
 			// De vorige stap was het lokale optimum, die terughalen.
 			NieuweSudoku = HuidigeSudoku;
-			while (NieuweSudoku.Evalueer() <= HuidigeSudoku.Evalueer())
+			while (NieuweSudoku.Evalueer() >= HuidigeSudoku.Evalueer())
 				// Als het nieuwe optimum niet beter was, keren we terug.
 				NieuweSudoku = HuidigeSudoku; 
 				// Maak een random walk van S lang, S kan gevarieerd worden.
@@ -561,18 +561,28 @@ Alles bij elkaar hangt het dus sterk af van de vorm van het landschap hoe effici
 \subsection{Iterated Local Search}
 Voor een uitgebreid(er) overzicht van de test-resultaten, zie \textit{appendix B}.
 \subsubsection{Effici\"{e}ntie}
-(Rekentijd en aantal toestanden tot globaal optimum)
+Iterated Local Search is in de meeste gevallen een stuk effici\"{e}nter dan hill climbing met random restart. Het lost de meeste puzzels met $n = 3$ binnen een halve minuut op (voor de juiste waarden van \textit{s}). Voor puzzels met $n = 4$ en $n = 5$ is het echter nog steeds niet snel genoeg. Tests met deze waarden duurden lang en lieten op een gegeven moment de test-computer zelfs crashen, waardoor waarden van eerdere tests verloren zijn gegaan. Precieze getallen over het aantal stappen/milliseconden dat nodig is om een oplossing te vinden voor deze waarden hebben we dus niet meer - maar het duurde een stuk langer dan je zou willen.
+
+Iterated local search vindt niet gegarandeerd een oplossing. Als \textit{s}, de lengte van de random walk, te klein wordt gekozen is het mogelijk dat binnen \textit{s} stappen van een gevonden lokaal optimum geen aantrekkingsgebied van een beter lokaal optimum begint. Het algoritme komt dan nooit meer uit dit lokale optimum weg. 
+
+Iterated Local Search werkt niet op alle puzzels even goed. Voor puzzels 2, 3 en 4 van $n = 3$ lijken de hill-climbing benaderingen niet erg effectief, terwijl ze voor puzzels 1 en 5 prima werken.
+
+
+\subsubsection{Lengte random walk}
+Uit de testen met puzzels met $n = 3$ blijkt dat een kleinere waarde voor \textit{s}, de lengte van de random walk, beter werkt. Hoe groter de waarde voor \textit{s}, hoe langer het algoritme erover doet om een oplossing te vinden. Voor de meeste puzzels met $n = 3$ werkt een waarde tussen de \textit{s = 10} en de \textit{s = 30} het beste. Waarschijnlijk is dit net voldoende om (in veel gevallen) uit het attractiegebied van een lokaal maximum weg te lopen. Voor grotere waarden van \textit{s}, \textit{s = 100} bijvoorbeeld, wordt de zoekruimte om het lokale maximum heen te groot. Hierdoor werkt het idee van iterated local search niet meer. Betere oplossingen liggen vaak in de buurt van goeie oplossingen, maar met een te grote waarde van \textit{s} kijk je te ver rond in de omgeving. 
+
 \section{Constraint Satisfaction}
 Voor een uitgebreid(er) overzicht van de test-resultaten, zie \textit{appendix C}.
-\subsection{Backtracking}
-\subsubsection{Effici\"{e}ntie}
-In tegenstelling tot de hill-climbing algoritmen is er bij backtracking geen kanselement betrokken. Het backtracking-algoritme doet niets meer dan alle mogelijkheden uitproberen, totdat het een globaal maximum vindt. Deze manier klinkt niet erg effici\"ent en is dat ook niet. W\'el kan de werking van het algoritme enorm verbeterd worden door het gebruik van sorteermethoden of door forward checking. De implementatie daarvan heeft u hierboven al kunnen lezen. 
+\subsection{Effici\"{e}ntie}
+In tegenstelling tot de hill-climbing algoritmen is er bij backtracking geen kanselement betrokken. Het backtracking-algoritme doet niets meer dan alle mogelijkheden uitproberen, totdat het een oplossing vindt. Deze manier klinkt niet erg effici\"ent en is dat ook niet. W\'el kan de werking van het algoritme enorm verbeterd worden door het gebruik van sorteermethoden of door forward checking. De implementatie daarvan heeft u hierboven al kunnen lezen. 
 
-De kleine sudoku's ($n = 3$) zijn voor het backtracking-algoritme makkelijk op te lossen. Zelfs zonder dat het gebruik hoeft te maken van sorteermethoden of forward checking. Sterker nog, met de uitbreidingen duurt het zelfs langer om de sudoku op te lossen. Het kost immers tijd om de lijst variabelen te ordenen en om vooruit te kijken. De winst die deze uitbreidingen geven, worden pas zichtbaar bij grotere problemen. Van de vier varianten is het meest simpele backtracking-algoritme zelfs het snelst in het oplossen van de 3x3 sudoku's.
+Alle vormen van backtracking zijn echter vele malen effici\"{e}nter dan de hill-climbing algoritmen. Het gaat systematischer en intelligenter om met het probleem en lost het dan ook veel sneller op.
 
-Het verhaal verandert drastisch wanneer we kijken naar de 4x4 sudoku's. Aangezien het exponentieel meer tijd gaat duren om alle mogelijkheden langs te gaan, valt brute-force backtracking door de mand. Het kost te veel tijd om alle mogelijkheden na te gaan. Het enige algoritme dat binnen enige tijd (enkele minuten) de meeste 4x4-sudoku's oplost is de combinatie van forward checking en sorteren. Enkel \'e\'en van beide varianten helpt niet genoeg. Bovendien blijkt hieruit dat het gebruik de combinatie van het sorteren van de volgorde waarin je de variabelen waardes geeft en forward checking, voordelig is voor de efficientie. 
+De kleine sudoku's ($n = 3$) zijn voor het backtracking-algoritme makkelijk op te lossen. Zelfs zonder dat het gebruik hoeft te maken van sorteermethoden of forward checking. Sterker nog, met de uitbreidingen duurt het zelfs langer om de sudoku op te lossen. Het kost immers tijd om de lijst variabelen te ordenen en om vooruit te kijken. De winst die deze uitbreidingen geven, wordt pas zichtbaar bij grotere problemen. Van de vier varianten is het meest simpele backtracking-algoritme zelfs het snelst in het oplossen van de 3x3 sudoku's.
 
-De 5x5 sudoku bleek zelfs voor forward checking met sorteren te moeilijk om op te lossen.
+Het verhaal verandert drastisch wanneer we kijken naar de 4x4 sudoku's. Aangezien het exponentieel meer tijd kost om alle mogelijkheden langs te gaan, valt brute-force backtracking door de mand. Het kost te veel tijd om alle mogelijkheden na te gaan. Het enige algoritme dat binnen enige tijd (enkele minuten) de meeste 4x4-sudoku's oplost is de combinatie van forward checking en sorteren. Enkel \'e\'en van beide uitbreidingen (alleen sorteren of alleen forward checking) helpt niet genoeg. Bovendien blijkt hieruit dat het gebruik van de combinatie van het sorteren van de volgorde waarin je de variabelen waardes geeft en forward checking, voordelig is voor de effici\"{e}ntie. 
+
+De 5x5 sudoku bleek zelfs voor forward checking met sorteren te moeilijk om op te lossen binnen een kwartier.
 
 \chapter{Reflectie}
 \section{Implementatie algoritmen}
@@ -583,13 +593,11 @@ Het opzetten van de representatie van het probleem kostte het meeste tijd in het
 Voor Constraint Satisfaction geldt ongeveer hetzelfde. Het opzetten van de representatie bleek het lastigste. Het implementeren van backtracking was iets eenvoudiger, en het toevoegen van de optie tot sorteren was snel gedaan. Backtracking met forward checking implementeren kostte weer iets meer tijd, maar ook hier was het toevoegen van de optie tot sorteren snel gebeurd. Beide algoritmen waren duidelijk lastiger te implementeren dan de hill-climbing algoritmen. Zo was ook de basis van hill-climbing eenvoudiger te implementeren dan die van Constraint Satisfaction.
 
 \section{Experimenten}
-Voor de experimenten hebben wij vijftien verschillende sudoku's gebruikt, want we hadden voor iedere grootte vijf verschillende sudoku's. De eerste sudoku was steeds de voor het practicum aangeleverde sudoku. De overige sudoku's hebben we van http://www.menneske.no/eng/sudoku. 
-
 Het testen van de algoritmes was tijdrovend werk voor de sudoku's die niet in een halve minuut werden opgelost. Het kost dan veel tijd om te wachten op een globaal maximum. Daarom hebben we veel sudoku's (n = 4 en n = 5) getest met lokale maxima. Dan hebben we geprobeerd conclusies te verbinden aan hoe snel een lokaal maximum wordt bereikt en welke evaluatiewaarde erbij hoorde. Bij bijvoorbeeld Iterated Local Search zegt het ook veel hoe snel het lokaal maximum beter wordt. 
 
-Bij backtracking werden de 3x3 sudoku's in enkele tientallen milliseconden opgelost. Dat is makkelijk te testen en te vergelijken, want je hebt onmiddelijk alle data. Van de 4x4 sudoku's was alleen forward checking in combinatie met sorteren in staat om de sudoku op te lossen in een kwartier. Aangezien backtracking geen lokaal maximum bijhoudt, hebben we hiervan geen data over hoe dicht de andere algoritmen bij het antwoord waren.
+Bij backtracking werden de 3x3 sudoku's in enkele tientallen milliseconden opgelost. Dat is makkelijk te testen en te vergelijken, want je hebt onmiddelijk alle data. Van de 4x4 sudoku's was alleen forward checking in combinatie met sorteren in staat om de sudoku op te lossen in een kwartier. Aangezien backtracking geen tussenstappen bijhoudt, hebben we hiervan geen data over hoe dicht de andere varianten bij het antwoord waren.
 
- 
+Voor de experimenten hebben wij vijftien verschillende sudoku's gebruikt, want we hadden voor iedere grootte vijf verschillende sudoku's. De eerste sudoku was steeds de voor het practicum aangeleverde sudoku. De overige sudoku's hebben we van \textit{http://www.menneske.no/eng/sudoku}, en zijn hieronder te vinden: 
 
 \subsection{3x3-sudoku's}
 \ \ \ \ Menneske-sudoku 2:
@@ -1109,28 +1117,57 @@ Voor de eerste twee puzzels in deze sectie zijn 5 testruns uitgevoerd, voor de l
 \end{tabular} 
 
 \chapter{Testresultaten Iterated Local Search}
-Het vinden van lokale maxima is uitgebreid getest bij de tests voor random restart. Voor iterated local search verandert hier weinig aan. Alle hieronder staande data heeft dus betrekking op het vinden van globale optima.
+
 \section{9 * 9 puzzels (n = 3)}
+Het vinden van lokale maxima is uitgebreid getest bij de tests voor random restart. Voor iterated local search verandert hier weinig aan. Alle hieronder staande data heeft dus betrekking op het vinden van globale optima. We hebben gekeken hoeveel stappen nodig zijn voor het vinden van een oplossing voor verschillende \textit{s}-waarden. Als er binnen 30 seconden geen oplossing is gevonden, stoppen we de run.
 \subsection{Puzzel 1 (test\_n3\_1\_ci)}
+\begin{tabular}{|c|c|c|c|c|}
+\hline  &  \multicolumn{4}{|c|}{Stappen tot oplossing} \\ 
+\hline Test & \textit{s = 10} & \textit{s = 20} & \textit{s = 30} & \textit{s = 50} \\ 
+\hline
+\hline 1 & 1224 & 1714 & 4571 & 42829 \\ 
+\hline 2 & 8135 & 9778 & 27211 &  - \\ 
+\hline 3 & 24657 & 17557 & 101748 &  25212 \\ 
+\hline 
+\hline Gemiddeld: & 17578 & 9683 & 44510 & 34020,5 * \\ 
+\hline 
+\end{tabular} 
 
+*Gemiddelde over de runs die wel een resultaat hebben opgeleverd, daarmee niet volledig representatief.
 \subsection{Puzzel 2 (test\_n3\_2\_menneske)}
+\begin{tabular}{|c|c|c|c|c|}
+\hline  &  \multicolumn{4}{|c|}{Stappen tot oplossing} \\ 
+\hline Test & \textit{s = 10} & \textit{s = 20} & \textit{s = 30} & \textit{s = 50} \\ 
+\hline
+\hline 1 & - & - & - & - \\ 
+\hline
+\end{tabular} 
 \subsection{Puzzel 3 (test\_n3\_3\_menneske)}
+\begin{tabular}{|c|c|c|c|c|}
+\hline  &  \multicolumn{4}{|c|}{Stappen tot oplossing} \\ 
+\hline Test & \textit{s = 10} & \textit{s = 20} & \textit{s = 30} & \textit{s = 50} \\ 
+\hline
+\hline 1 & - & 568881 & - & - \\ 
+\hline
+\end{tabular} 
 \subsection{Puzzel 4 (test\_n3\_4\_menneske)}
+\begin{tabular}{|c|c|c|c|c|}
+\hline  &  \multicolumn{4}{|c|}{Stappen tot oplossing} \\ 
+\hline Test & \textit{s = 10} & \textit{s = 20} & \textit{s = 30} & \textit{s = 50} \\ 
+\hline
+\hline 1 & - & - & - & - \\ 
+\hline
+\end{tabular} 
 \subsection{Puzzel 5 (test\_n3\_5\_menneske)}
-\section{16 * 16 puzzels (n = 4)}
-\subsection{Puzzel 1 (test\_n4\_1\_ci)}
-
-\subsection{Puzzel 2 (test\_n4\_2\_menneske)}
-\subsection{Puzzel 3 (test\_n4\_3\_menneske)}
-\subsection{Puzzel 4 (test\_n4\_4\_menneske)}
-\subsection{Puzzel 5 (test\_n4\_5\_menneske)}
-\section{25 * 25 puzzels (n = 5)}
-\subsection{Puzzel 1 (test\_n5\_1\_ci)}
-
-\subsection{Puzzel 2 (test\_n5\_2\_menneske)}
-\subsection{Puzzel 3 (test\_n5\_3\_menneske)}
-\subsection{Puzzel 4 (test\_n5\_4\_menneske)}
-\subsection{Puzzel 5 (test\_n5\_5\_menneske)}
+\begin{tabular}{|c|c|c|c|c|}
+\hline  &  \multicolumn{4}{|c|}{Stappen tot oplossing} \\ 
+\hline Test & \textit{s = 10} & \textit{s = 20} & \textit{s = 30} & \textit{s = 50} \\ 
+\hline
+\hline 1 & 173 & 987 & 4801 & 11154 \\ 
+\hline
+\end{tabular} 
+\section{16 * 16 puzzels (n = 4) en 25 * 25 puzzels (n = 5)}
+Voor $n = 4$ en $n = 5$ wordt in redelijke tijd geen oplossing gevonden. Daarom presenteren we hier geen resultaten van.
 
 \chapter{Testresultaten Constraint Satisfaction - backtracking}
 Aangezien er bij backtracking geen kanselement betrokken is, hebben we dit algoritme minder uitvoerig getest. We hebben voor iedere sudoku en iedere variant twee keer een oplossing berekend. Het weergegeven getal is de gemiddelde tijd in milliseconden. In sommige gevallen kon het algoritme geen oplossing vinden in de gestelde tijd. Dat staat aangegeven als \textquotedblleft\textgreater 5 minuten". In dat geval hebben we het algoritme 5 minuten laten lopen en heeft het algoritme in die tijd geen oplossing kunnen vinden.
