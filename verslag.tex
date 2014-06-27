@@ -585,6 +585,12 @@ Voor Constraint Satisfaction geldt ongeveer hetzelfde. Het opzetten van de repre
 \section{Experimenten}
 Voor de experimenten hebben wij vijftien verschillende sudoku's gebruikt, want we hadden voor iedere grootte vijf verschillende sudoku's. De eerste sudoku was steeds de voor het practicum aangeleverde sudoku. De overige sudoku's hebben we van http://www.menneske.no/eng/sudoku. 
 
+Het testen van de algoritmes was tijdrovend werk voor de sudoku's die niet in een halve minuut werden opgelost. Het kost dan veel tijd om te wachten op een globaal maximum. Daarom hebben we veel sudoku's (n = 4 en n = 5) getest met lokale maxima. Dan hebben we geprobeerd conclusies te verbinden aan hoe snel een lokaal maximum wordt bereikt en welke evaluatiewaarde erbij hoorde. Bij bijvoorbeeld Iterated Local Search zegt het ook veel hoe snel het lokaal maximum beter wordt. 
+
+Bij backtracking werden de 3x3 sudoku's in enkele tientallen milliseconden opgelost. Dat is makkelijk te testen en te vergelijken, want je hebt onmiddelijk alle data. Van de 4x4 sudoku's was alleen forward checking in combinatie met sorteren in staat om de sudoku op te lossen in een kwartier. Aangezien backtracking geen lokaal maximum bijhoudt, hebben we hiervan geen data over hoe dicht de andere algoritmen bij het antwoord waren.
+
+ 
+
 \subsection{3x3-sudoku's}
 Menneske-sudoku 2:
 \begin{tabular}{|c|c|c||c|c|c||c|c|c|}
