@@ -102,16 +102,11 @@ public class Puzzel {
 			nieuwesudoku = zoekoperator(sudoku);
 			if(nieuwesudoku == null) 
 			{
-				//System.out.println("Lokaal maximum gevonden!");
-				//System.out.println("Aantal stappen: " + tellerLok);
-				//long duurLok = System.currentTimeMillis() - tijdLok;
-				//System.out.println("Tijd: " + duurLok);
-				//System.out.println("Evalueerfunctie: " + sudoku.evalueer());
-				//System.out.println(sudoku);
-				//System.out.println();
+				
 				nieuwesudoku = new Sudoku(sudoku);
 				while (nieuwesudoku.evalueer() <= sudoku.evalueer()) 
 				{
+					tellerLok = 0;
 					nieuwesudoku = new Sudoku(sudoku);
 					// Random walk van s lang, s is bovenaan deze file in te stellen.
 					for (int i = 0; i < s; i++)
@@ -136,7 +131,6 @@ public class Puzzel {
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
 		long duurGlob = System.currentTimeMillis() - tijdGlob;
 		System.out.println("Tijd in totaal: "+ duurGlob);
-		System.out.println("Tijd sinds begin hill-climb: " + tijdLok);
 		System.out.println(sudoku);
 	}
 	
@@ -153,20 +147,11 @@ public class Puzzel {
 		{
 					
 			nieuwesudoku = zoekoperator(sudoku);
-			//System.out.println(nieuwesudoku.evalueer());
-			//System.out.println(nieuwesudoku);
-			
+						
 			//indien een lokaal optimum wordt bereikt
 			if(nieuwesudoku == null) 
 			{
-				//System.out.println("Lokaal maximum gevonden!");
-				//System.out.println("Aantal stappen: " + tellerLok);
-				//long duurLok = System.currentTimeMillis() - tijdLok;
-				//System.out.println("Tijd: " + duurLok);
-				//System.out.println("Evalueerfunctie: " + sudoku.evalueer());
-				//System.out.println(sudoku);
-				//System.out.println();
-				
+								
 				// reset voor de volgende Hill-climb search.
 				sudoku = new Sudoku(n,sud);
 
@@ -178,13 +163,11 @@ public class Puzzel {
 		}
 		
 		long duurGlob = System.currentTimeMillis() - tijdGlob;
-		long duurLok = System.currentTimeMillis() - tijdLok;
 		
 		System.out.println("Globaal optimum: ");
 		System.out.println("Aantal stappen in totaal: " + tellerGlob);
 		System.out.println("Aantal stappen sinds begin hill-climb: "+ tellerLok);
 		System.out.println("Tijd in totaal: "+ duurGlob);
-		System.out.println("Tijd sinds begin hill-climb: " + duurLok);
 		System.out.println("Aantal lokale optima bereikt: " + aantalLokaleOptima);
 		System.out.println(sudoku);
 	}
@@ -303,21 +286,14 @@ public class Puzzel {
 				}
 				
 				vakje.setWaarde(i+1);
-				//vakje.domeinelementToevoegen(i+1);
-				//sudoku.getGetallen()[i][j].setWaarde(x);
-				
-				
+								
 				if(sudoku.consistent(vakje.getX(), vakje.getY())) {
-					//inferences(sudoku);
-					//if(inferences != null) inferencesNaarAssignment()
-					
-					
+										
 					Sudoku nieuwesudoku = backtrackingRecursief(sudoku);
 					if(nieuwesudoku != null) return nieuwesudoku;
 				}
 				vakje.setWaarde(0);
 				vakje.setDomein(bewaar);
-				//vakje.domeinelementVerwijderen(i+1);
 				
 			}
 		}

@@ -404,7 +404,7 @@ public class Sudoku {
 						// verwijderen we de waarde van dat vakje uit het domein van ons vakje.
 						if (constraints[i][j][c].getV2().domeinGrootte() == 1)
 						{
-							getallen[i][j].domeinelementVerwijderen(constraints[i][j][c].getV2().getWaarde());
+							if(constraints[i][j][c].getV2().gevuld()) getallen[i][j].domeinelementVerwijderen(constraints[i][j][c].getV2().getWaarde());
 						}
 					}
 					else
@@ -412,7 +412,7 @@ public class Sudoku {
 						// Symmetrisch
 						if (constraints[i][j][c].getV1().domeinGrootte() == 1)
 						{
-							getallen[i][j].domeinelementVerwijderen(constraints[i][j][c].getV1().getWaarde());
+							if(constraints[i][j][c].getV1().gevuld()) getallen[i][j].domeinelementVerwijderen(constraints[i][j][c].getV1().getWaarde());
 						}
 					}
 				}
